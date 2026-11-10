@@ -169,8 +169,7 @@ fun ModelSelectorBottomSheet(
                                 title = section.group?.title ?: "Models",
                                 accent = accent,
                                 count = section.families.size,
-                                windows = section.group?.headerWindows.orEmpty(),
-                                modifier = Modifier.animateItem()
+                                windows = section.group?.headerWindows.orEmpty()
                             )
                         }
                         items(section.families, key = { "m_${it.baseId}" }) { family ->
@@ -194,9 +193,11 @@ fun ModelSelectorBottomSheet(
                                 } else null,
                                 onSelect = { id ->
                                     onSelectModel(id)
-                                    onDismiss()
+                                    // close with the sheet's own animation: dismissing instantly makes the
+                                    // list and the scrim vanish in one frame, which reads as a blink
+                                    scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
                                 },
-                                modifier = Modifier.padding(vertical = 3.dp).animateItem()
+                                modifier = Modifier.padding(vertical = 3.dp)
                             )
                         }
                     }

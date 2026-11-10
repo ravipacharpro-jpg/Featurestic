@@ -329,8 +329,14 @@ fun CodexModelSheet(backend: CodexChatBackend, onOpenSettings: () -> Unit, onDis
     val error by backend.modelsError.collectAsState()
     val limits by backend.rateLimits.collectAsState()
     val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    // close with the sheet's own animation; an instant dismiss makes the list vanish in one frame (a blink)
+    val closeSheet: () -> Unit = {
+        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+    }
+    // only fetch when the list is not already in memory: replacing it while the sheet is open made the rows jump
     LaunchedEffect(Unit) {
-        backend.refreshModels()
+        if (models.isEmpty()) backend.refreshModels()
         backend.refreshRateLimits()
     }
     // the plan's limits count every Codex model together: one group, its meters above the list
@@ -338,7 +344,7 @@ fun CodexModelSheet(backend: CodexChatBackend, onOpenSettings: () -> Unit, onDis
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
@@ -368,7 +374,7 @@ fun CodexModelSheet(backend: CodexChatBackend, onOpenSettings: () -> Unit, onDis
                         border = BorderStroke(1.dp, if (isOn) CodexAccent.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
                         modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp).clip(RoundedCornerShape(14.dp)).clickable {
                             backend.selectModel(m.id)
-                            onDismiss()
+                            closeSheet()
                         }
                     ) {
                         Row(Modifier.padding(horizontal = 14.dp, vertical = 11.dp), verticalAlignment = Alignment.CenterVertically) {

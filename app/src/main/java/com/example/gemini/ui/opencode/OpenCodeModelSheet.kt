@@ -34,6 +34,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -46,6 +47,7 @@ import com.example.gemini.data.agent.opencode.OpenCodeChatBackend
 import com.example.gemini.domain.model.AgentKind
 import com.example.gemini.ui.agents.AgentSheetHeader
 import com.example.gemini.ui.components.OpenCodeAccent
+import kotlinx.coroutines.launch
 
 /** OpenCode's model picker: every model of the connected providers, grouped by provider, with search. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,11 +58,18 @@ fun OpenCodeModelSheet(backend: OpenCodeChatBackend, onOpenSettings: () -> Unit,
     val refreshing by backend.isRefreshingModels.collectAsState()
     val error by backend.modelsError.collectAsState()
     var query by remember { mutableStateOf("") }
-    LaunchedEffect(Unit) { backend.refreshModels() }
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+    // close with the sheet's own animation; an instant dismiss makes the list vanish in one frame (a blink)
+    val closeSheet: () -> Unit = {
+        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+    }
+    // only fetch when the list is not already in memory: replacing it while the sheet is open made the rows jump
+    LaunchedEffect(Unit) { if (models.isEmpty()) backend.refreshModels() }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
@@ -104,7 +113,7 @@ fun OpenCodeModelSheet(backend: OpenCodeChatBackend, onOpenSettings: () -> Unit,
                             border = BorderStroke(1.dp, if (isOn) OpenCodeAccent.copy(alpha = 0.6f) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f)),
                             modifier = Modifier.fillMaxWidth().padding(vertical = 3.dp).clip(RoundedCornerShape(14.dp)).clickable {
                                 backend.selectModel(m.id)
-                                onDismiss()
+                                closeSheet()
                             }
                         ) {
                             Row(Modifier.padding(horizontal = 14.dp, vertical = 11.dp), verticalAlignment = Alignment.CenterVertically) {

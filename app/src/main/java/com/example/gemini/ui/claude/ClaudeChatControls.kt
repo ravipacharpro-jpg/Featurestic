@@ -38,6 +38,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -45,6 +46,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,6 +72,7 @@ import com.example.gemini.ui.agents.SegmentedSelector
 import com.example.gemini.ui.agents.SheetSectionLabel
 import com.example.gemini.ui.components.ClaudeAccent
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /** Accent of the model sheet's n-th plan group: Claude's own for "All models", then one hue per model limit. */
 private fun claudeGroupColor(index: Int): Color = when (index) {
@@ -268,6 +271,12 @@ fun ClaudeModelSheet(
     remember { ModelGroupPrefs.init(context) }
     val groupOverrides by ModelGroupPrefs.overrides(QuotaAgent.CLAUDE).collectAsState()
     val pillWindow by ModelGroupPrefs.pillWindow(QuotaAgent.CLAUDE).collectAsState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val scope = rememberCoroutineScope()
+    // close with the sheet's own animation; an instant dismiss makes the list vanish in one frame (a blink)
+    val closeSheet: () -> Unit = {
+        scope.launch { sheetState.hide() }.invokeOnCompletion { onDismiss() }
+    }
     var editingGroups by remember { mutableStateOf(false) }
     // plan limits as groups: "All models" (5h + 7d) and one per model with its own weekly share (Fable)
     val quotaGroups = remember(usage, liveLimits) { ClaudeQuotaGroups.groups(usage, liveLimits) }
@@ -281,6 +290,7 @@ fun ClaudeModelSheet(
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
+        sheetState = sheetState,
         containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = 0.dp,
         shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
@@ -346,7 +356,7 @@ fun ClaudeModelSheet(
                 Surface(
                     onClick = {
                         backend.selectModel(value)
-                        onDismiss()
+                        closeSheet()
                     },
                     enabled = groupControl == null,
                     shape = RoundedCornerShape(14.dp),
