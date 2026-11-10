@@ -21,6 +21,10 @@ concurrency:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    env:
+      # this workflow adds an "upstream" remote, and gh would otherwise resolve
+      # the repository from that remote (Santoshkurmi/antigem) and fail with 403
+      GH_REPO: ${{ github.repository }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -93,10 +97,10 @@ jobs:
         run: |
           VERSION="v$(python3 -c "import json;print(json.load(open('version.json'))['version_name'])")"
           NEEDED="${{ steps.merge.outputs.version_changed }}"
-          if [ "$NEEDED" = "0" ] && gh release view "$VERSION" >/dev/null 2>&1; then
+          if [ "$NEEDED" = "0" ] && gh release view "$VERSION" --repo "$GH_REPO" >/dev/null 2>&1; then
             echo "No version bump and $VERSION already published - nothing to build."
             exit 0
           fi
           echo "Dispatching release build for $VERSION"
-          gh workflow run release.yml --ref master
+          gh workflow run release.yml --repo "$GH_REPO" --ref master
 
