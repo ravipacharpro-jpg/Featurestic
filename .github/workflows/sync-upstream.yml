@@ -1,0 +1,101 @@
+name: Sync upstream AntiGem
+
+# Pulls new commits from Santoshkurmi/antigem into this repository, re-applies the
+# Featurestic branding on top, and publishes a release when upstream bumped the
+# version. Runs every 6 hours; can also be started by hand from the Actions tab.
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python (brand patch + icon generator)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: python3 -m pip install --quiet pillow
+
+      - name: Configure git
+        run: |
+          git config user.name "Featurestic Updater"
+          git config user.email "actions@users.noreply.github.com"
+
+      - name: Merge upstream
+        id: merge
+        run: |
+          git remote add upstream https://github.com/Santoshkurmi/antigem.git
+          git fetch --no-tags upstream master
+          if [ "$(git rev-parse HEAD)" = "$(git rev-parse upstream/master)" ]; then
+            echo "Nothing to merge: already up to date."
+            echo "new=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git merge-base --is-ancestor upstream/master HEAD; then
+            echo "Nothing to merge: upstream is behind."
+            echo "new=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          BEFORE=$(git rev-parse HEAD)
+          # on a conflict, take upstream's side; apply_brand.sh re-applies ours below
+          git merge --no-edit -X theirs upstream/master
+          echo "new=1" >> "$GITHUB_OUTPUT"
+          echo "before=$BEFORE" >> "$GITHUB_OUTPUT"
+          echo "version_changed=$(git diff --name-only "$BEFORE" HEAD -- version.json | wc -l)" >> "$GITHUB_OUTPUT"
+
+      - name: Re-apply Featurestic branding
+        if: steps.merge.outputs.new == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! bash scripts/apply_brand.sh; then
+            echo "::error::apply_brand.sh failed - upstream refactored a branded file."
+            git reset --hard "${{ steps.merge.outputs.before }}"
+            gh issue create \
+              --title "Upstream sync needs a manual fix" \
+              --body "The automatic merge from Santoshkurmi/antigem succeeded, but \`scripts/apply_brand.sh\` could not re-apply the Featurestic branding (it prints the file it could not patch). Nothing was pushed, so the app keeps working; fix the script and run the **Sync upstream AntiGem** workflow again." \
+              || true
+            exit 1
+          fi
+          git add -A
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: re-apply Featurestic branding after upstream merge"
+          fi
+
+      - name: Push
+        if: steps.merge.outputs.new == '1'
+        run: git push origin HEAD:master
+
+      - name: Publish a release if upstream bumped the version
+        if: steps.merge.outputs.new == '1'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="v$(python3 -c "import json;print(json.load(open('version.json'))['version_name'])")"
+          NEEDED="${{ steps.merge.outputs.version_changed }}"
+          if [ "$NEEDED" = "0" ] && gh release view "$VERSION" >/dev/null 2>&1; then
+            echo "No version bump and $VERSION already published - nothing to build."
+            exit 0
+          fi
+          echo "Dispatching release build for $VERSION"
+          gh workflow run release.yml --ref master
