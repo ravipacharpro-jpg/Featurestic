@@ -249,7 +249,7 @@ internal fun openOptionsFor(entry: ExplorerEntry, ideAvailable: Boolean, content
     val preview = when {
         !allowPreview -> null
         k == FileKind.MARKDOWN -> OpenOption(OpenChoice.PREVIEW, Icons.Outlined.Visibility, "Preview", "Rendered Markdown", recommended = false)
-        k == FileKind.VIDEO -> OpenOption(OpenChoice.PREVIEW, Icons.Outlined.SmartDisplay, "Play in AntiGem", "Built-in player: full screen, seek, speed", recommended = true)
+        k == FileKind.VIDEO -> OpenOption(OpenChoice.PREVIEW, Icons.Outlined.SmartDisplay, "Play in Featurestic", "Built-in player: full screen, seek, speed", recommended = true)
         FileKinds.isBrowsableArchive(entry.name) -> OpenOption(OpenChoice.PREVIEW, Icons.Outlined.Inventory2, "View contents", "See what is inside, then extract", recommended = k == FileKind.ARCHIVE)
         else -> null
     }

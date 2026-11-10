@@ -219,7 +219,7 @@ fun AppPermissionsDialog(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 Text(
-                    text = "Welcome to AntiGem",
+                    text = "Welcome to Featurestic",
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     color = textPrimary,
@@ -227,7 +227,7 @@ fun AppPermissionsDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Allow a few things so AntiGem can run in the background and work with your files.",
+                    text = "Allow a few things so Featurestic can run in the background and work with your files.",
                     fontSize = 14.sp,
                     lineHeight = 20.sp,
                     color = textSecondary,

@@ -141,7 +141,7 @@ fun OpenCodeMcpPage(backend: OpenCodeChatBackend, onOpenRea: () -> Unit = {}, on
     fun local(name: String, path: String) = McpDraft(name = name, url = "http://127.0.0.1:${bridge.DEFAULT_PORT}$path", headers = lines(deviceHeaders))
     val presets = listOf(
         OpenCodeMcpPreset("Custom Plugin MCP", "Pick an installed plugin", Icons.Outlined.Extension, ClaudeTerracotta, null),
-        OpenCodeMcpPreset("Plugin Developer", "Build & test AntiGem plugins", Icons.Outlined.DeveloperMode, GeminiPurple, local(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
+        OpenCodeMcpPreset("Plugin Developer", "Build & test Featurestic plugins", Icons.Outlined.DeveloperMode, GeminiPurple, local(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
         OpenCodeMcpPreset("Browser", "Control the in-app browser", Icons.Outlined.Language, GeminiBlue, local("browser_mcp", "/browser")),
         OpenCodeMcpPreset("Terminal", "Run commands in the terminal", Icons.Outlined.Terminal, QuotaGreen, local("terminal_mcp", "/terminal")),
         OpenCodeMcpPreset("Android", "Tap, type & read this phone", Icons.Outlined.PhoneAndroid, com.example.gemini.theme.AppColors.accentTeal, local(bridge.ANDROID_AUTOMATION_MCP_NAME, "/android")),

@@ -1575,7 +1575,7 @@ fun MarkdownImageView(
                     model = ImageRequest.Builder(context)
                         .data(resolvedUrl)
                         .crossfade(true)
-                        .setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36 AntiGem/1.0")
+                        .setHeader("User-Agent", "Mozilla/5.0 (Linux; Android 14; Mobile) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36 Featurestic/1.0")
                         .decoderFactory(SvgDecoder.Factory())
                         .listener(
                             onStart = { isImageLoading = true; isImageError = false },

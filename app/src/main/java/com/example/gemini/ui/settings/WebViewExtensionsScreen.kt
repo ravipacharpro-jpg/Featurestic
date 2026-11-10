@@ -91,8 +91,8 @@ fun WebViewExtensionsScreen(onChanged: () -> Unit) {
             PluginRepositoriesTab(busy, ::runOperation, ::folderTaken, ::freeFolder)
             return@Column
         }
-        Text("Install custom AntiGem plugins from ZIP files or from a repository. A plugin can have MCP tools, skills (skills/*.md), or both. Changes apply to the running browser immediately.", style = MaterialTheme.typography.bodyMedium)
-        Text("To create a plugin with your model, add Custom AntiGem Plugin Developer in MCP settings. It supplies the SDK, draft editing, installation, updates, tests and worker logs.", style = MaterialTheme.typography.bodySmall)
+        Text("Install custom Featurestic plugins from ZIP files or from a repository. A plugin can have MCP tools, skills (skills/*.md), or both. Changes apply to the running browser immediately.", style = MaterialTheme.typography.bodyMedium)
+        Text("To create a plugin with your model, add Custom Featurestic Plugin Developer in MCP settings. It supplies the SDK, draft editing, installation, updates, tests and worker logs.", style = MaterialTheme.typography.bodySmall)
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             Button(enabled = !busy, onClick = { update = null; picker.launch(arrayOf("*/*")) }) { Text("Install ZIP") }
             OutlinedButton(enabled = !busy, onClick = { runOperation { manager.refreshExtensions(); null } }) { Text("Refresh") }
@@ -144,7 +144,7 @@ fun WebViewExtensionsScreen(onChanged: () -> Unit) {
                 }
             }
         }
-        Text("Add an enabled plugin to your model in MCP settings → Custom AntiGem Plugin MCP; its skills come with it as get_skills / get_skill tools. In chat, type /plu: to point the model at a plugin or one of its skills. Updating or reloading restarts that plugin's worker; its MCP connection and stored data are kept.", style = MaterialTheme.typography.bodySmall)
+        Text("Add an enabled plugin to your model in MCP settings → Custom Featurestic Plugin MCP; its skills come with it as get_skills / get_skill tools. In chat, type /plu: to point the model at a plugin or one of its skills. Updating or reloading restarts that plugin's worker; its MCP connection and stored data are kept.", style = MaterialTheme.typography.bodySmall)
     }
     conflict?.takeIf { zip != null }?.let { existing -> AlertDialog(
         onDismissRequest = { zip = null; conflict = null },
@@ -211,10 +211,10 @@ fun WebViewExtensionsScreen(onChanged: () -> Unit) {
 fun WebViewExtensionMcpPicker(onDismiss: () -> Unit, onSelect: (BrowserExtension) -> Unit) {
     val manager = remember { BrowserExtensionManager.instance }
     LaunchedEffect(Unit) { manager.loadExtensions() }
-    AlertDialog(onDismissRequest = onDismiss, title = { Text("Custom AntiGem Plugin MCP") },
+    AlertDialog(onDismissRequest = onDismiss, title = { Text("Custom Featurestic Plugin MCP") },
         text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             val available = manager.extensions.filter { it.isEnabled && (it.toolCount > 0 || it.skillCount > 0) }
-            if (available.isEmpty()) Text("Enable or install a plugin in Settings → Custom AntiGem Plugins first.")
+            if (available.isEmpty()) Text("Enable or install a plugin in Settings → Custom Featurestic Plugins first.")
             available.forEach { extension ->
                 OutlinedButton(onClick = { onSelect(extension) }, modifier = Modifier.fillMaxWidth()) {
                     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {

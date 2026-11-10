@@ -1,17 +1,22 @@
+<!-- featurestic-banner -->
+> **Featurestic** is a rebranded build of [AntiGem](https://github.com/Santoshkurmi/antigem)
+> by Santosh Kurmi, published under the GPL-3.0. It is not an official AntiGem release.
+> Downloads and updates for this build come from this repository.
+
 <div align="center">
 
-<img src="docs/readme/icon.svg" alt="AntiGem app icon" width="112">
+<img src="docs/readme/featurestic.png" alt="Featurestic app icon" width="112">
 
-# AntiGem
+# Featurestic
 
 **An AI coding workspace for Android: Antigravity, Claude Code, OpenCode and Codex agents, a real Linux terminal, a code editor and a browser the agent can control, all in one app.**
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?style=flat-square&logo=kotlin&logoColor=white)](https://developer.android.com/jetpack/compose)
 [![Go](https://img.shields.io/badge/Bridge-Go-00ADD8?style=flat-square&logo=go&logoColor=white)](https://go.dev)
 [![License](https://img.shields.io/badge/License-GPLv3-blue?style=flat-square)](LICENSE)
-[![Releases](https://img.shields.io/github/v/release/santoshkurmi/antigem?style=flat-square&label=Download)](https://github.com/santoshkurmi/antigem/releases)
+[![Releases](https://img.shields.io/github/v/release/ravipacharpro-jpg/Featurestic?style=flat-square&label=Download)](https://github.com/ravipacharpro-jpg/Featurestic/releases)
 
-[Download](https://github.com/santoshkurmi/antigem/releases) · [Website](https://santoshkurmi.github.io/antigem/) · [Plugin SDK](extension_docs/README.md) · [User Guide](user_docs/README.md) · [WhatsApp community](https://chat.whatsapp.com/IGQX8q9zSVV0RarG70sclV?s=cl&p=a&mlu=4&ilr=4)
+[Download](https://github.com/ravipacharpro-jpg/Featurestic/releases) · [Website](https://github.com/ravipacharpro-jpg/Featurestic) · [Plugin SDK](extension_docs/README.md) · [User Guide](user_docs/README.md) · [WhatsApp community](https://chat.whatsapp.com/IGQX8q9zSVV0RarG70sclV?s=cl&p=a&mlu=4&ilr=4)
 
 <br>
 
@@ -216,7 +221,7 @@ Each one is a one-tap preset in **Settings → MCP Servers**, for every agent.
 
 ## Download
 
-Get the latest APK from [Releases](https://github.com/santoshkurmi/antigem/releases). There are two build variants, and one extra **mode** that works with either of them:
+Get the latest APK from [Releases](https://github.com/ravipacharpro-jpg/Featurestic/releases). There are two build variants, and one extra **mode** that works with either of them:
 
 | Variant | Package name | Needs the Termux app? | Notes |
 | :--- | :--- | :---: | :--- |
@@ -384,7 +389,7 @@ The Backups & Restore screen is for the phone's own data and is hidden in Server
 **Requirements:** JDK 17+, Android SDK (API 35, Build Tools 35+) and Go 1.23+ for the bridge.
 
 ```bash
-git clone https://github.com/santoshkurmi/antigem.git
+git clone https://github.com/ravipacharpro-jpg/Featurestic.git
 cd antigem
 
 # Build the termux variant

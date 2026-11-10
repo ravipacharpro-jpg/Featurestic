@@ -86,7 +86,7 @@ object FullscreenVideo {
         current = Entry(controller, title)
     }
 
-    /** Plays a file or link full screen in the built-in player ("Play in AntiGem"). */
+    /** Plays a file or link full screen in the built-in player ("Play in Featurestic"). */
     fun play(context: Context, source: String, title: String? = null) {
         val c = VideoPlayerController(context, source)
         open(c, title?.takeIf { it.isNotBlank() } ?: c.name)

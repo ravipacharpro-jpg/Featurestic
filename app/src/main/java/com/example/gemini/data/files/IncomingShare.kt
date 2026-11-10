@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-/** One file (or a shared piece of text) another app sent to AntiGem. */
+/** One file (or a shared piece of text) another app sent to Featurestic. */
 data class IncomingItem(
     val uri: Uri?,
     val name: String,

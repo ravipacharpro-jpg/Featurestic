@@ -203,7 +203,7 @@ private fun SignInCard(state: GitHubManager.State, cardBg: Color, cardBorder: Bo
                         modifier = Modifier.fillMaxWidth().padding(vertical = 14.dp), textAlign = androidx.compose.ui.text.style.TextAlign.Center
                     )
                 }
-                Hint("1. Tap the button below: the code is copied and GitHub opens.\n2. Paste the code and approve AntiGem's access.\n3. Come back here; sign-in finishes by itself.")
+                Hint("1. Tap the button below: the code is copied and GitHub opens.\n2. Paste the code and approve Featurestic's access.\n3. Come back here; sign-in finishes by itself.")
                 Button(onClick = {
                     clipboard.setText(AnnotatedString(login.code))
                     openUrl(context, login.url)

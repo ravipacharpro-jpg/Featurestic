@@ -123,7 +123,7 @@ fun AdbConnectScreen(cardBg: Color, cardBorder: BorderStroke) {
                 when {
                     !devOptionsOn -> "Open About phone and tap Build number 7 times to unlock Developer options."
                     !wirelessOn -> "In Developer options, turn on Wireless debugging. Your phone must be on Wi-Fi."
-                    else -> "Ready. Wireless debugging uses a new port each time it turns on; AntiGem finds it for you."
+                    else -> "Ready. Wireless debugging uses a new port each time it turns on; Featurestic finds it for you."
                 }
             )
             if (!wirelessReady) OutlinedButton(onClick = { AdbConnectManager.openWirelessDebuggingSettings(context) }) {
@@ -137,7 +137,7 @@ fun AdbConnectScreen(cardBg: Color, cardBorder: BorderStroke) {
             if (!notificationsOn) {
                 Surface(shape = RoundedCornerShape(10.dp), color = Amber.copy(alpha = 0.12f)) {
                     Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("Notifications are off for AntiGem. The pairing code is entered in a notification, so allow them first.", fontSize = 12.sp)
+                        Text("Notifications are off for Featurestic. The pairing code is entered in a notification, so allow them first.", fontSize = 12.sp)
                         TextButton(onClick = {
                             val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
@@ -202,7 +202,7 @@ fun AdbConnectScreen(cardBg: Color, cardBorder: BorderStroke) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Reconnect automatically", fontSize = 13.5.sp, fontWeight = FontWeight.SemiBold)
-                    Hint("When Wireless debugging turns on again, for example after Wi-Fi reconnects, AntiGem finds the new port and connects while it's running.")
+                    Hint("When Wireless debugging turns on again, for example after Wi-Fi reconnects, Featurestic finds the new port and connects while it's running.")
                 }
                 Spacer(Modifier.width(8.dp))
                 Switch(checked = state.autoReconnect, onCheckedChange = AdbConnectManager::setAutoReconnect)
@@ -300,7 +300,7 @@ private fun PairingSteps() {
         listOf(
             "Tap Start pairing. A notification appears and Wireless debugging opens.",
             "Tap \"Pair device with pairing code\".",
-            "Pull down the notification shade and type the 6-digit code into the AntiGem notification.",
+            "Pull down the notification shade and type the 6-digit code into the Featurestic notification.",
         ).forEachIndexed { i, text -> Hint("${i + 1}. $text") }
         Text(
             "Stay in Settings while you do this. Android closes the pairing dialog as soon as you leave it.",

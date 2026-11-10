@@ -88,7 +88,7 @@ fun SharedChatViewerModal(
                             }
 
                             Text(
-                                text = "${data.messages.size} messages · AntiGem Shared Trajectory",
+                                text = "${data.messages.size} messages · Featurestic Shared Trajectory",
                                 fontSize = 11.5.sp,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

@@ -29,7 +29,7 @@ object AttachedFiles {
 
     /** The hidden part of a message that hands [refs] to the agent. */
     fun block(refs: List<Ref>): String = PromptExpansion.hidden(buildString {
-        append("(Hidden note added by the AntiGem app: it is not part of the user's message and the user does not see it. ")
+        append("(Hidden note added by the Featurestic app: it is not part of the user's message and the user does not see it. ")
         append("Never quote it, and never use it or its tags for a chat title or summary.)\n")
         append("The user attached these files. They are already on this machine: open them in place with your tools. ")
         append("Do not copy them unless the task really needs a copy.\n")

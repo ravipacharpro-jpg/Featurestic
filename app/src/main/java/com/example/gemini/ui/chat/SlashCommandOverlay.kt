@@ -51,7 +51,7 @@ private fun groupOf(type: String): SlashGroup = when (type) {
     "app" -> SlashGroup("Opens in the app", Icons.AutoMirrored.Outlined.OpenInNew, AgyAccent)
     "command" -> SlashGroup("Commands", Icons.Outlined.Terminal, ClaudeTerracotta)
     "custom" -> SlashGroup("Custom commands", Icons.Outlined.AutoAwesome, ClaudeTerracotta)
-    "plugin" -> SlashGroup("Custom AntiGem plugins", Icons.Outlined.Extension, AgyAccent)
+    "plugin" -> SlashGroup("Custom Featurestic plugins", Icons.Outlined.Extension, AgyAccent)
     else -> SlashGroup("Skills & plugins", Icons.Outlined.Extension, QuotaGreen)
 }
 
@@ -125,7 +125,7 @@ private fun SlashRow(item: SlashCommandItem, group: SlashGroup, query: String, r
             Modifier.size(30.dp).clip(RoundedCornerShape(9.dp)).background(group.color.copy(alpha = 0.13f)),
             contentAlignment = Alignment.Center
         ) {
-            // Custom AntiGem plugins carry their icon file in path
+            // Custom Featurestic plugins carry their icon file in path
             if (item.type == "plugin" && item.path.isNotBlank()) com.example.gemini.ui.settings.PluginIcon(item.path, 30.dp)
             else Icon(if (item.type == "skill" && item.pluginName == null) Icons.Outlined.AutoAwesome else group.icon, null, tint = group.color, modifier = Modifier.size(16.dp))
         }

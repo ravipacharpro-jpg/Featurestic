@@ -604,7 +604,7 @@ object ReaManager {
         _state.update { it.copy(progress = "Adding ${wanted.label} to the plugin repositories…") }
         val repo = PluginRepositories.repos.firstOrNull { it.slug.equals(wanted.slug, ignoreCase = true) }
             ?: withContext(Dispatchers.Main) {
-                // The default branch is what Custom AntiGem Plugins shows; "main" is spelled out only when asked
+                // The default branch is what Custom Featurestic Plugins shows; "main" is spelled out only when asked
                 val plain = if (wanted.ref == "main") wanted.copy(ref = "") else wanted
                 PluginRepositories.add(plain)
                 plain
@@ -679,7 +679,7 @@ object ReaManager {
     private fun acquireWakeLock() {
         runCatching {
             val pm = appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AntiGem:rea-setup").apply {
+            wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Featurestic:rea-setup").apply {
                 setReferenceCounted(false)
                 acquire(3 * 60 * 60 * 1000L)
             }
@@ -713,7 +713,7 @@ object ReaManager {
     }
 
     private suspend fun httpGet(url: String): String = withContext(Dispatchers.IO) {
-        val request = Request.Builder().url(url).header("User-Agent", "AntiGem/${BuildConfig.VERSION_NAME}").build()
+        val request = Request.Builder().url(url).header("User-Agent", "Featurestic/${BuildConfig.VERSION_NAME}").build()
         http.newCall(request).execute().use { response ->
             if (response.code == 404) throw IllegalStateException("Not found: $url (is the repository pushed and the source right?)")
             if (!response.isSuccessful) throw IllegalStateException("Download failed (HTTP ${response.code}): $url")

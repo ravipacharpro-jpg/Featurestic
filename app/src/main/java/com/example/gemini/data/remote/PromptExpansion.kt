@@ -95,19 +95,19 @@ object PromptExpansion {
         val skill = skillName?.let { name -> plugin.skills.firstOrNull { it.name == name } }
         if (skill != null) {
             val name = skill.name
-            lines += "The user wants you to use the custom AntiGem plugin \"${plugin.name}\" (id: ${plugin.id}) and its skill \"$name\"."
+            lines += "The user wants you to use the custom Featurestic plugin \"${plugin.name}\" (id: ${plugin.id}) and its skill \"$name\"."
             lines += "- Read the skill file fully before acting: ${skill.path}"
             skill.detailDir?.let { lines += "- Its detail files are in $it/ — open them only when the skill refers to them." }
             lines += "- If you cannot read that file but have the MCP server \"$server\", call its get_skill tool with name \"$name\" instead."
         } else {
-            lines += "The user wants you to use the custom AntiGem plugin \"${plugin.name}\" (id: ${plugin.id})" + (if (plugin.description.isNotBlank()) ": ${plugin.description}" else ".")
+            lines += "The user wants you to use the custom Featurestic plugin \"${plugin.name}\" (id: ${plugin.id})" + (if (plugin.description.isNotBlank()) ": ${plugin.description}" else ".")
             val skills = plugin.skills.map { it.name }
             val skillsDir = plugin.skills.firstOrNull()?.path?.substringBeforeLast('/')
             if (skillsDir != null) lines += "- Its skills (guides) are in $skillsDir/: ${skills.take(30).joinToString(", ")}${if (skills.size > 30) ", …" else ""}. Read the one that matches the task before acting."
         }
         // The skill text arrives either way; only the plugin's own tools need its MCP server
         lines += if (plugin.toolCount > 0) {
-            "- The plugin's own tools come from the MCP server \"$server\". Check whether the task depends on them. If it does and you don't have that server's tools, stop and ask the user to enable it in MCP settings → Custom AntiGem Plugin MCP. If it doesn't, do the task with the tools you already have."
+            "- The plugin's own tools come from the MCP server \"$server\". Check whether the task depends on them. If it does and you don't have that server's tools, stop and ask the user to enable it in MCP settings → Custom Featurestic Plugin MCP. If it doesn't, do the task with the tools you already have."
         } else {
             "- This plugin has no tools of its own: follow its instructions with the tools you already have."
         }
@@ -115,7 +115,7 @@ object PromptExpansion {
         val others = BrowserExtensionManager.instance.extensions.filter { it.isEnabled && it.id != plugin.id && it.skills.isNotEmpty() }
         if (others.isNotEmpty()) {
             val listed = others.take(10).joinToString("; ") { other -> "${other.id} (${other.skills.first().path.substringBeforeLast('/')}/)" }
-            lines += "- If this plugin depends on another custom AntiGem plugin, also read that plugin's matching skill before using it. Other installed plugins with skills: $listed${if (others.size > 10) "; …" else ""}."
+            lines += "- If this plugin depends on another custom Featurestic plugin, also read that plugin's matching skill before using it. Other installed plugins with skills: $listed${if (others.size > 10) "; …" else ""}."
         }
         return lines.joinToString("\n")
     }
@@ -143,7 +143,7 @@ object PromptExpansion {
 
     /** The `/plu` entry point and the user's custom commands, shown in the normal `/` list. */
     fun baseSlashItems(): List<SlashCommandItem> =
-        listOf(SlashCommandItem("plu", "/plu:", "Use a custom AntiGem plugin and its skills", "plugin")) + CustomSlashCommands.slashItems()
+        listOf(SlashCommandItem("plu", "/plu:", "Use a custom Featurestic plugin and its skills", "plugin")) + CustomSlashCommands.slashItems()
 
     private fun escape(value: String) = value.replace("&", "&amp;").replace("\"", "&quot;").replace("<", "&lt;").replace(">", "&gt;")
     private fun unescape(value: String) = value.replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", "\"").replace("&amp;", "&")

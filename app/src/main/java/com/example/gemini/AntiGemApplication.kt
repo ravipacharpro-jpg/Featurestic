@@ -48,26 +48,7 @@ class AntiGemApplication : Application(), coil.ImageLoaderFactory {
         com.example.gemini.data.ssh.SshSessionFactory.init(this)
         // the cloud project new Antigravity chats start in (Remote Agents), before the first chat is created
         com.example.gemini.data.agent.agy.AgyCloud.init(this)
-        // Forks build with their own key, so only official release APKs report real usage.
-        if (!BuildConfig.DEBUG && !isOfficialRelease()) {
-            Toast.makeText(
-                this,
-                "Unofficial build: analytics disabled. Developer: set your own TelemetryDeck app ID and RELEASE_CERT_SHA256 in AntiGemApplication.kt.",
-                Toast.LENGTH_LONG
-            ).show()
-            return
-        }
-        TelemetryDeck.start(
-            this,
-            TelemetryDeck.Builder()
-                .appID("D98008E6-EEE4-4BBC-97A2-E3790251AECF")
-                .namespace("com.santoshkurmi")
-                .defaultUser(SimpleTelemetryId.getUniqueUserId(this))
-                .testMode(BuildConfig.DEBUG)
-                .showDebugLogs(BuildConfig.DEBUG)
-                .sendNewSessionBeganSignal(true)
-        )
-
+        // Featurestic: analytics disabled. Nothing is sent from this build.
     }
 
     private fun isOfficialRelease(): Boolean = runCatching {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 /**
- * The system binds this once the user turns on "AntiGem Android Automation" in Accessibility settings.
+ * The system binds this once the user turns on "Featurestic Android Automation" in Accessibility settings.
  * It only does what the android_automation_mcp tools ask; it never acts on events by itself.
  */
 class AutomationAccessibilityService : AccessibilityService() {

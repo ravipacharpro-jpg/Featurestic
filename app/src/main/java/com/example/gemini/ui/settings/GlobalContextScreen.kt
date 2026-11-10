@@ -88,7 +88,7 @@ fun GlobalContextScreen() {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(Icons.Outlined.Lock, null, tint = muted, modifier = Modifier.size(12.dp))
                             Spacer(Modifier.width(4.dp))
-                            Text("By AntiGem · read-only · first message", fontSize = 12.sp, color = muted)
+                            Text("By Featurestic · read-only · first message", fontSize = 12.sp, color = muted)
                         }
                     }
                     Switch(checked = builtInOn, onCheckedChange = { GlobalContext.setBuiltInEnabled(it) })

@@ -46,7 +46,7 @@ object ArtifactDownloadHelper {
             if (savedUri != null) {
                 if (snackbarHostState != null) {
                     val result = snackbarHostState.showSnackbar(
-                        message = "$fileName saved to Downloads/AntiGem",
+                        message = "$fileName saved to Downloads/Featurestic",
                         actionLabel = "Open",
                         duration = SnackbarDuration.Short
                     )
@@ -54,7 +54,7 @@ object ArtifactDownloadHelper {
                         openFile(context, savedUri, mimeType)
                     }
                 } else {
-                    Toast.makeText(context, "$fileName saved to Downloads/AntiGem", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "$fileName saved to Downloads/Featurestic", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 Toast.makeText(context, "Failed to download $fileName", Toast.LENGTH_SHORT).show()
@@ -122,7 +122,7 @@ object ArtifactDownloadHelper {
                 val contentValues = ContentValues().apply {
                     put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                     put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
-                    put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/AntiGem")
+                    put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DOWNLOADS}/Featurestic")
                     put(MediaStore.MediaColumns.IS_PENDING, 1)
                 }
 
@@ -141,7 +141,7 @@ object ArtifactDownloadHelper {
 
                 Triple(itemUri, mimeType, fileName)
             } else {
-                val downloadsDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "AntiGem")
+                val downloadsDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Featurestic")
                 if (!downloadsDir.exists()) downloadsDir.mkdirs()
                 val targetFile = File(downloadsDir, fileName)
                 targetFile.writeBytes(bytes)

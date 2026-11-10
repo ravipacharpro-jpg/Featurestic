@@ -90,8 +90,8 @@ fun AndroidAutomationScreen(cardBg: Color, cardBorder: BorderStroke, onOpenAdbCo
 
         // 1. Accessibility service (required)
         StepCard(1, "Accessibility service", if (running) "Allowed" else "Required", cardBg, cardBorder, badgeColor = if (running) QuotaGreen else Amber) {
-            Hint("Reads the screen, taps, swipes, types and takes screenshots. In Accessibility settings, open \"AntiGem Android Automation\" (it may be under Installed apps or Downloaded apps) and turn it on.")
-            CheckRow("AntiGem Android Automation", running)
+            Hint("Reads the screen, taps, swipes, types and takes screenshots. In Accessibility settings, open \"Featurestic Android Automation\" (it may be under Installed apps or Downloaded apps) and turn it on.")
+            CheckRow("Featurestic Android Automation", running)
             if (!running) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     Button(onClick = { AndroidAutomation.openAccessibilitySettings(context) }) { Text("Open Accessibility") }

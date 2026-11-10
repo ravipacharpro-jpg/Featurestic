@@ -39,7 +39,7 @@ object AndroidAutomation {
         "outward-facing: uninstalling, deleting, sending messages, payments, changing security settings. " +
         "If a tool says a permission or ADB is missing, tell the user exactly what to do and stop."
 
-    private const val ADB_NEEDED = "This needs ADB. Ask the user to open AntiGem → Settings → ADB Connect and connect " +
+    private const val ADB_NEEDED = "This needs ADB. Ask the user to open Featurestic → Settings → ADB Connect and connect " +
         "(pair once, with Wireless debugging on), then try again."
 
     /** Elements of the latest android_get_ui_tree, by id. */
@@ -63,8 +63,8 @@ object AndroidAutomation {
     fun notReadyMessage(context: Context): String? = when {
         isServiceRunning() -> null
         isServiceEnabledInSettings(context) -> "Android Automation's accessibility service is turned on but not running. " +
-            "Ask the user to turn \"AntiGem Android Automation\" off and on again in Android Settings → Accessibility, then reconnect this MCP server."
-        else -> "Android Automation is not set up. Ask the user to open AntiGem → Settings → Android Automation and grant the permissions there " +
+            "Ask the user to turn \"Featurestic Android Automation\" off and on again in Android Settings → Accessibility, then reconnect this MCP server."
+        else -> "Android Automation is not set up. Ask the user to open Featurestic → Settings → Android Automation and grant the permissions there " +
             "(the Accessibility service; on Android 13+ they may first need App info → ⋮ → Allow restricted settings). Then reconnect this MCP server."
     }
 
@@ -731,7 +731,7 @@ object AndroidAutomation {
 
     private suspend fun uninstall(context: Context, svc: AutomationAccessibilityService, args: JSONObject): JSONObject {
         val pkg = packageArg(args)
-        if (pkg == context.packageName) return error("Refusing to uninstall AntiGem itself.")
+        if (pkg == context.packageName) return error("Refusing to uninstall Featurestic itself.")
         val device = AdbConnectManager.ensureConnected()
         if (device != null) {
             val keep = if (args.optBoolean("keep_data")) "-k " else ""

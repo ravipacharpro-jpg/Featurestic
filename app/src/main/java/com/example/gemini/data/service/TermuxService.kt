@@ -164,7 +164,7 @@ open class TermuxService : Service(), LifecycleOwner, ViewModelStoreOwner, Saved
 
     private fun setupNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = "AntiGem Terminal & Execution Service"
+            val name = "Featurestic Terminal & Execution Service"
             val descriptionText = "Terminal sessions and background execution"
             val importance = NotificationManager.IMPORTANCE_LOW
             val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
@@ -227,7 +227,7 @@ open class TermuxService : Service(), LifecycleOwner, ViewModelStoreOwner, Saved
         val priority = if (wakeLockHeld) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_LOW
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("AntiGem")
+            .setContentTitle("Featurestic")
             .setContentText(notificationText)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentIntent(pendingIntent)

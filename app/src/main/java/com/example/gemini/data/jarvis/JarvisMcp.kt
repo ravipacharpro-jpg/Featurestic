@@ -23,14 +23,14 @@ import java.util.Locale
 import java.util.TimeZone
 
 /**
- * jarvis_mcp: lets the model drive the AntiGem app directly (no tapping or scrolling): its voice, tasks it manages in their
+ * jarvis_mcp: lets the model drive the Featurestic app directly (no tapping or scrolling): its voice, tasks it manages in their
  * own chats, chats of both agents, models and chat settings, approvals, screens and settings pages, the IDE's projects and
  * files, app help and configuration, usage, and Jarvis' own memory. Served by AndroidLocalBridgeServer at /jarvis. All
  * state is read and changed through the app's own objects.
  */
 object JarvisMcp {
 
-    const val INSTRUCTIONS = "Jarvis controls the AntiGem app and leads teams of sub-agents. The first message of a Jarvis chat " +
+    const val INSTRUCTIONS = "Jarvis controls the Featurestic app and leads teams of sub-agents. The first message of a Jarvis chat " +
         "has the full guide and tool list; jarvis_help repeats it. Call these tools directly by name (no searching, no config reading). " +
         "In the voice chat everything the user should hear goes through jarvis_speak; in a Jarvis text chat you write normal replies. " +
         "Big jobs go to jarvis_task_start (its own watched chat, optionally a team); pass your manager_id. Never wait or poll for tasks: " +
@@ -196,7 +196,7 @@ object JarvisMcp {
             "Where the user is and what is going on: the screen, the IDE project and open files, the chat on screen, tasks, running chats, " +
                 "approvals waiting, and Jarvis' own mode. The context note of each message already has most of this."))
         put(tool("jarvis_app_guide",
-            "How to use AntiGem: where a setting is, how to add an MCP server, sign in, use the terminal, IDE, git, browser, notes, plugins, " +
+            "How to use Featurestic: where a setting is, how to add an MCP server, sign in, use the terminal, IDE, git, browser, notes, plugins, " +
                 "server mode, Jarvis' own features, troubleshooting. Give a topic or the user's words.",
             listOf("topic"), "topic" to prop("string", "A topic (overview, settings, agents, claude, antigravity, mcp, plugins, terminal, ide, browser, notes, appearance, backups, server_mode, jarvis, tasks, troubleshooting) or words")))
         put(tool("jarvis_get_config",
@@ -799,7 +799,7 @@ object JarvisMcp {
 
     /** Hidden in front of every task's goal: how a sub-agent of Jarvis works and reports, and its team's role. */
     private fun subAgentBrief(team: JarvisManagers.Team?): String = buildString {
-        append("You are a sub-agent of Jarvis, the lead agent of the AntiGem app, which delegated this task to you. Work on it on your own until it is ")
+        append("You are a sub-agent of Jarvis, the lead agent of the Featurestic app, which delegated this task to you. Work on it on your own until it is ")
         append("completely done: do not stop halfway to ask for confirmation, and ask a question only when you are truly blocked (it reaches Jarvis). ")
         append("Verify your work (build, tests, or running it) where that makes sense. Finish with a short report: what you did, the files you changed, ")
         append("how you verified it, and anything left open, risky or needing a decision. ")
@@ -1534,7 +1534,7 @@ object JarvisMcp {
     /** Null when GitHub works here; otherwise why not, and what the user should do. */
     private suspend fun githubProblem(context: Context): String? {
         if (!com.example.gemini.data.local.LocalEnvironmentManager.isTermuxPackage(context))
-            return "GitHub sign-in is only in the Termux build of AntiGem."
+            return "GitHub sign-in is only in the Termux build of Featurestic."
         val s = com.example.gemini.data.github.GitHubManager.statusNow(context)
         val where = if (com.example.gemini.data.github.GitHubManager.remote) "on the server" else "in the terminal"
         return when {
@@ -1547,7 +1547,7 @@ object JarvisMcp {
     }
 
     private suspend fun githubStatus(context: Context): JSONObject {
-        if (!com.example.gemini.data.local.LocalEnvironmentManager.isTermuxPackage(context)) return error("GitHub sign-in is only in the Termux build of AntiGem.")
+        if (!com.example.gemini.data.local.LocalEnvironmentManager.isTermuxPackage(context)) return error("GitHub sign-in is only in the Termux build of Featurestic.")
         val gh = com.example.gemini.data.github.GitHubManager
         val s = gh.statusNow(context)
         return json(JSONObject().apply {

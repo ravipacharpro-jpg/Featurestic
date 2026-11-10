@@ -44,6 +44,8 @@ android {
     signingConfigs {
         create("release") {
             storeFile = file("release.jks")
+            // PKCS#12 container (made with openssl; there is no keytool on Android)
+            storeType = "PKCS12"
             storePassword = "123456"
             keyAlias = "antigem"
             keyPassword = "123456"
@@ -95,7 +97,7 @@ android {
     }
 
     base {
-        archivesName.set("antiGem")
+        archivesName.set("featurestic")
     }
 
     compileOptions {

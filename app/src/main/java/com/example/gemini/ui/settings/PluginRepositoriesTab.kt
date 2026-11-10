@@ -21,7 +21,7 @@ import com.example.gemini.ui.browser.RepoPlugin
 import kotlinx.coroutines.launch
 
 /**
- * Settings → Custom AntiGem Plugins → Repositories: GitHub repositories of plugin folders, their plugins with
+ * Settings → Custom Featurestic Plugins → Repositories: GitHub repositories of plugin folders, their plugins with
  * install/update status, and the guide for hosting one. [runOperation]'s result is shown as a notice.
  */
 @Composable

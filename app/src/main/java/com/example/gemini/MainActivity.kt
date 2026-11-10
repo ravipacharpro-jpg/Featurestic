@@ -667,7 +667,7 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Files opened with or shared to AntiGem. Shared conversations (.antigem) import directly; everything else (one file,
+     * Files opened with or shared to Featurestic. Shared conversations (.antigem) import directly; everything else (one file,
      * many files, or plain text / code) asks first: open in the code editor, preview, or save to a folder.
      */
     private fun handleIncomingFileIntent(intent: Intent?) {

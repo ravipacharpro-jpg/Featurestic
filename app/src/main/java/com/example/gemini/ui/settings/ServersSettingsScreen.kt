@@ -404,7 +404,7 @@ internal fun ServersSubScreen(
         AlertDialog(
             onDismissRequest = { showRestartDialog = false },
             icon = { Icon(Icons.Outlined.RestartAlt, null, tint = ClaudeTerracotta, modifier = Modifier.size(28.dp)) },
-            title = { Text("Reopen AntiGem?", fontWeight = FontWeight.Bold, fontSize = 17.sp) },
+            title = { Text("Reopen Featurestic?", fontWeight = FontWeight.Bold, fontSize = 17.sp) },
             text = {
                 Text(
                     if (remote) "Settings saved. Reopening the app connects over SSH, starts the bridge that is already on the server and opens the connections with the new settings."
@@ -1015,7 +1015,7 @@ internal fun ServersSubScreen(
                     )
                     if (com.example.gemini.data.local.LocalEnvironmentManager.isTermuxPackage(context)) {
                         Text(
-                            "• Claude Code: the default is AntiGem's launcher, which runs the newest official Claude version through the bundled glibc. Claude updates never replace it.",
+                            "• Claude Code: the default is Featurestic's launcher, which runs the newest official Claude version through the bundled glibc. Claude updates never replace it.",
                             fontSize = 11.sp, color = subtle
                         )
                         Text(

@@ -50,7 +50,7 @@ class UpdateCheckWorker(context: Context, params: WorkerParameters) : CoroutineW
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(CHANNEL_ID, "App Updates", NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = "Notifies when a new AntiGem version is available"
+                description = "Notifies when a new Featurestic version is available"
             }
             context.getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
         }
@@ -65,7 +65,7 @@ class UpdateCheckWorker(context: Context, params: WorkerParameters) : CoroutineW
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle("Update available: v${info.versionName}")
-            .setContentText(info.changelog.firstOrNull() ?: "Tap to update AntiGem")
+            .setContentText(info.changelog.firstOrNull() ?: "Tap to update Featurestic")
             .setStyle(NotificationCompat.BigTextStyle().bigText(info.changelog.joinToString("\n") { "• $it" }))
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

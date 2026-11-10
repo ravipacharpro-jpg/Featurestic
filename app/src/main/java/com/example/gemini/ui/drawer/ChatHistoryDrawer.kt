@@ -471,7 +471,7 @@ fun ChatHistoryDrawer(
             },
             title = {
                 Text(
-                    text = "Exit AntiGem?",
+                    text = "Exit Featurestic?",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -628,7 +628,7 @@ fun ChatHistoryDrawer(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "AntiGem",
+                    text = "Featurestic",
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = (-0.3).sp,

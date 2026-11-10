@@ -327,7 +327,7 @@ private fun UnsupportedDeviceScreen(onContinue: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(28.dp))
                 InstallerCard {
-                    Text("You can still use AntiGem", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = AppColors.onBackground)
+                    Text("You can still use Featurestic", fontSize = 15.sp, fontWeight = FontWeight.SemiBold, color = AppColors.onBackground)
                     Spacer(modifier = Modifier.height(10.dp))
                     listOf(
                         Icons.Outlined.Dns to "Server mode: run the agents on a computer or server and connect to it",
@@ -351,7 +351,7 @@ private fun UnsupportedDeviceScreen(onContinue: () -> Unit) {
                 Spacer(modifier = Modifier.height(24.dp))
             }
             Column(modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 8.dp, bottom = 20.dp)) {
-                PrimaryButton("Continue to AntiGem", icon = null, onClick = onContinue)
+                PrimaryButton("Continue to Featurestic", icon = null, onClick = onContinue)
             }
         }
     }
@@ -397,7 +397,7 @@ private fun InstallerHero(state: LocalInstallerState, isTermux: Boolean) {
         text = when (state) {
             is LocalInstallerState.Success -> if (isTermux) "The shell, core tools and AGY tools are installed." else "Ubuntu, bash, glibc and AGY tools are installed."
             is LocalInstallerState.Error -> "You can try again, or install from a ZIP file instead."
-            is LocalInstallerState.Idle -> "AntiGem runs its terminal, IDE and agents on a local Linux system. Choose how to install it."
+            is LocalInstallerState.Idle -> "Featurestic runs its terminal, IDE and agents on a local Linux system. Choose how to install it."
             is LocalInstallerState.Discovering -> "Checking for the latest verified archive."
             is LocalInstallerState.AwaitingConfirmation -> "Review the details and confirm."
             else -> "This takes a few minutes. You can keep using the app meanwhile."

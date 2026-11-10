@@ -81,7 +81,7 @@ export class ExtensionHost {
     const sandbox = { console: log, chrome, browser: chrome, setTimeout: (...a) => timer(false, ...a), setInterval: (...a) => timer(true, ...a), clearTimeout: h => { clearTimeout(h); ctx.timers.delete(h); }, clearInterval: h => { clearInterval(h); ctx.timers.delete(h); },
       fetch: (input, options) => fetch(typeof input === 'string' ? new URL(input, workerURL) : input, options), URL, URLSearchParams, TextEncoder, TextDecoder,
       Blob, FormData, Request, Response, Headers, AbortController, AbortSignal, crypto: webcrypto, performance, structuredClone, atob, btoa,
-      Event, EventTarget, MessageEvent, WebSocket: globalThis.WebSocket, navigator: { userAgent: `AntiGem Extension Host Node/${process.versions.node}`, language: 'en', languages: ['en'] }, location: new URL(workerURL) };
+      Event, EventTarget, MessageEvent, WebSocket: globalThis.WebSocket, navigator: { userAgent: `Featurestic Extension Host Node/${process.versions.node}`, language: 'en', languages: ['en'] }, location: new URL(workerURL) };
     sandbox.self = sandbox; sandbox.globalThis = sandbox;
     const scopeEvents = new EventTarget(); sandbox.addEventListener = scopeEvents.addEventListener.bind(scopeEvents); sandbox.removeEventListener = scopeEvents.removeEventListener.bind(scopeEvents); sandbox.dispatchEvent = scopeEvents.dispatchEvent.bind(scopeEvents);
     const context = vm.createContext(sandbox); ext.context = context; ext.background = ctx;
@@ -133,7 +133,7 @@ export class ExtensionHost {
     }
     if (method === 'runtime.portMessage' || method === 'runtime.portDisconnect') { const p = this.ports.get(args.portId); if (!p?.peers.has(ctx.id)) throw new Error('Attempting to use a disconnected port'); for (const id of p.peers) if (id !== ctx.id) { const peer = this.contexts.get(id); if (peer) this.send(peer, method === 'runtime.portMessage' ? 'runtime.portMessage' : 'runtime.portDisconnect', method === 'runtime.portMessage' ? [args.portId, args.message] : [args.portId]); } if (method.endsWith('portDisconnect')) this.ports.delete(args.portId); return; }
     if (method === 'runtime.getPlatformInfo') return { os: 'android', arch: process.arch === 'arm64' ? 'arm64' : process.arch, nacl_arch: process.arch };
-    if (method === 'runtime.getBrowserInfo') return { name: 'AntiGem', vendor: 'AntiGem', version: '1.0', buildID: process.version };
+    if (method === 'runtime.getBrowserInfo') return { name: 'Featurestic', vendor: 'Featurestic', version: '1.0', buildID: process.version };
     if (method === 'runtime.getContexts') return [...this.contexts.values()].filter(c => c.extension === ext).map(c => ({ contextId: c.id, contextType: c.type.toUpperCase(), tabId: c.tabId ?? -1, frameId: c.frameId ?? -1, documentUrl: c.url || '' }));
     if (method === 'runtime.reload') { setTimeout(() => this.reload(ext.id).catch(console.error), 10); return; }
     if (method === 'runtime.openOptionsPage' || method.startsWith('sidePanel.') || ['action.openPopup','action.setPopup','action.getPopup'].includes(method)) throw new Error('Extension UI is not supported; use this extension through its MCP server in Settings');

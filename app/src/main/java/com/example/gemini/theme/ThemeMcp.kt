@@ -9,7 +9,7 @@ import org.json.JSONObject
  */
 object ThemeMcp {
 
-    const val INSTRUCTIONS = "Controls AntiGem's color themes. theme_list shows every theme (built-in and custom) and which is used for the light " +
+    const val INSTRUCTIONS = "Controls Featurestic's color themes. theme_list shows every theme (built-in and custom) and which is used for the light " +
         "and the dark side; theme_apply switches. To make a theme: call theme_tokens once to see every color and what it is for, then " +
         "theme_create with a name, dark=true/false and at least the seed colors (background, surface, card, surface_variant, on_background, " +
         "on_surface_variant, primary, secondary, tertiary, success, warning, danger, info, code_bg and the syntax_* colors); every other color is " +

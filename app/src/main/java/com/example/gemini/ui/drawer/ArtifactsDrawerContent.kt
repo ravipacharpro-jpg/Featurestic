@@ -333,7 +333,7 @@ private fun ArtifactCardItem(
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Download,
-                        contentDescription = "Download to Downloads/AntiGem",
+                        contentDescription = "Download to Downloads/Featurestic",
                         tint = MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(17.dp)
                     )

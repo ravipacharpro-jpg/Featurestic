@@ -11,12 +11,12 @@ class AntiGemDeviceAdminReceiver : DeviceAdminReceiver() {
 
     override fun onEnabled(context: Context, intent: Intent) {
         super.onEnabled(context, intent)
-        Log.d(TAG, "AntiGem Device Admin Protection ENABLED")
+        Log.d(TAG, "Featurestic Device Admin Protection ENABLED")
     }
 
     override fun onDisabled(context: Context, intent: Intent) {
         super.onDisabled(context, intent)
-        Log.d(TAG, "AntiGem Device Admin Protection DISABLED")
+        Log.d(TAG, "Featurestic Device Admin Protection DISABLED")
     }
 
     companion object {
@@ -36,7 +36,7 @@ class AntiGemDeviceAdminReceiver : DeviceAdminReceiver() {
                 putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, getComponentName(context))
                 putExtra(
                     DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                    "Enabling Device Admin protects AntiGem from accidental uninstallation so your Linux environment and coding projects are not lost."
+                    "Enabling Device Admin protects Featurestic from accidental uninstallation so your Linux environment and coding projects are not lost."
                 )
             }
         }
@@ -51,7 +51,7 @@ class AntiGemDeviceAdminReceiver : DeviceAdminReceiver() {
             val dpm = context.getSystemService(Context.DEVICE_POLICY_SERVICE) as? DevicePolicyManager ?: return
             try {
                 dpm.removeActiveAdmin(getComponentName(context))
-                Log.d(TAG, "Removed AntiGem active Device Admin")
+                Log.d(TAG, "Removed Featurestic active Device Admin")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to remove Device Admin: ${e.message}", e)
             }

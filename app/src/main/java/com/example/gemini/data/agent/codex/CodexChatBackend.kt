@@ -721,7 +721,7 @@ class CodexChatBackend(
                     _selectedModelId.value.takeIf { it.isNotBlank() }?.let { put("model", it) }
                     put("approvalPolicy", CodexPreferences.approvalPolicy(mode))
                     put("sandbox", CodexPreferences.sandboxMode(mode))
-                    put("serviceName", "AntiGem")
+                    put("serviceName", "Featurestic")
                 })
                 val tid = r.getOrNull().obj().o("thread").str("id")
                 if (tid == null) {
@@ -1038,7 +1038,7 @@ class CodexChatBackend(
             _selectedModelId.value.takeIf { it.isNotBlank() }?.let { put("model", it) }
             put("approvalPolicy", CodexPreferences.approvalPolicy(mode))
             put("sandbox", CodexPreferences.sandboxMode(mode))
-            put("serviceName", "AntiGem")
+            put("serviceName", "Featurestic")
         })
         val tid = r.getOrNull().obj().o("thread").str("id")
         if (tid == null) {

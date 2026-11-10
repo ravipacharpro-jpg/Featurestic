@@ -38,7 +38,7 @@ private sealed class ShareStep {
 }
 
 /**
- * Shown when another app shares or opens files with AntiGem: open in the code editor, preview Markdown, or save into
+ * Shown when another app shares or opens files with Featurestic: open in the code editor, preview Markdown, or save into
  * any folder (streamed through the IDE bridge, so it also works for a Linux distro or a remote server).
  */
 @Composable

@@ -143,7 +143,7 @@ object ThemeManager {
             m.putAll(theme.colors)
             ThemeTokens.derive(m, theme.colors.keys, theme.dark)
         }
-        // AntiGem's own colors always exist (from the default theme of the same side)
+        // Featurestic's own colors always exist (from the default theme of the same side)
         if (theme.id != BuiltInThemes.default(theme.dark).id) {
             BuiltInThemes.default(theme.dark).colors.forEach { (k, v) -> if (!ThemeTokens.isMaterial(k)) m.putIfAbsent(k, v) }
         }

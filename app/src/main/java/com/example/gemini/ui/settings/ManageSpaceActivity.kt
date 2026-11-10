@@ -253,7 +253,7 @@ private fun ManageSpaceScreen(
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
                     Text(
-                        text = "AntiGem Space Manager",
+                        text = "Featurestic Space Manager",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground
@@ -402,7 +402,7 @@ private fun ManageSpaceScreen(
             onDismissRequest = { showResetConfirmation = false },
             icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.error) },
             title = { Text("Confirm Full Reset", fontWeight = FontWeight.Bold) },
-            text = { Text("Are you sure you want to wipe all AntiGem data? This will permanently delete all Linux packages, workspaces, accounts, and chats.") },
+            text = { Text("Are you sure you want to wipe all Featurestic data? This will permanently delete all Linux packages, workspaces, accounts, and chats.") },
             confirmButton = {
                 Button(
                     onClick = {

@@ -84,11 +84,11 @@ import com.example.gemini.data.daemon.TermuxDaemonManager
 import com.example.gemini.data.daemon.IdeApiClient
 
 enum class SettingsSection(val title: String, val subtitle: String) {
-    MAIN("Settings & Preferences", "Configure your AntiGem experience"),
+    MAIN("Settings & Preferences", "Configure your Featurestic experience"),
     THEMES("Themes", "Light and dark mode, and the theme gallery"),
     APPEARANCE("Appearance", "Chat text size, chat list, header icons and the app switcher"),
     SERVERS("Servers & Connectivity", "Configure AGY Hub and IDE Bridge endpoints"),
-    WEBVIEW_EXTENSIONS("Custom AntiGem Plugins", "Install and manage plugins: MCP tools and skills"),
+    WEBVIEW_EXTENSIONS("Custom Featurestic Plugins", "Install and manage plugins: MCP tools and skills"),
     SLASH_COMMANDS("Slash Commands", "Your own / commands and what they expand to"),
     MCP("MCP Servers", "Model Context Protocol tools & integrations"),
     SKILLS_PLUGINS("Skills & Plugins", "Agent capabilities, Google plugins, and extensions"),
@@ -132,7 +132,7 @@ enum class SettingsSection(val title: String, val subtitle: String) {
     TERMUX_SUPPORT("Termux Support", "Termux:API and the X11 desktop"),
     TERMUX_API("Termux:API", "How termux-api commands are handled"),
     X11_DESKTOP("X11 Desktop", "Linux desktop apps with Termux:X11"),
-    CHANGELOG("What's new", "Every AntiGem version and what changed"),
+    CHANGELOG("What's new", "Every Featurestic version and what changed"),
     ABOUT("About & Info", "App version, package details, and bridge export");
 
     /** The Jarvis section this page shows (Settings → Jarvis → …), or null. */
@@ -1097,7 +1097,7 @@ private fun rememberDeviceToolRows(onNavigate: (SettingsSection) -> Unit): Devic
 }
 
 /**
- * Settings → Termux Support → Termux:API: how termux-api commands are handled, by AntiGem's built-in
+ * Settings → Termux Support → Termux:API: how termux-api commands are handled, by Featurestic's built-in
  * handlers or by the external Termux:API companion app (that one needs the Shared UID build).
  */
 @Composable
@@ -1602,7 +1602,7 @@ private fun AppearanceSubScreen(
                         color = ClaudeTerracotta.copy(alpha = 0.15f)
                     ) {
                         Text(
-                            text = "How does AntiGem connect to AGY Hub?",
+                            text = "How does Featurestic connect to AGY Hub?",
                             fontSize = (13 * chatFontScale).sp,
                             color = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
@@ -1622,7 +1622,7 @@ private fun AppearanceSubScreen(
                     ) {
                         Column(modifier = Modifier.padding(12.dp)) {
                             Text(
-                                text = "AntiGem connects via gRPC-Web to stream live agent steps and tool executions.",
+                                text = "Featurestic connects via gRPC-Web to stream live agent steps and tool executions.",
                                 fontSize = (13 * chatFontScale).sp,
                                 lineHeight = (18 * chatFontScale).sp,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -2073,7 +2073,7 @@ private fun AppearanceSubScreen(
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "Modern AntiGem styled icon & name",
+                                        text = "Modern Featurestic styled icon & name",
                                         fontSize = 10.5.sp,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                     )
@@ -2644,7 +2644,7 @@ private fun McpSubScreen(
             val presets = listOf(
                 // No spec: opens the picker for an installed plugin's own MCP
                 McpPreset("Custom Plugin MCP", "Pick an installed plugin", Icons.Outlined.Extension, ClaudeTerracotta, null),
-                McpPreset("Plugin Developer", "Build & test AntiGem plugins", Icons.Outlined.DeveloperMode, GeminiPurple,
+                McpPreset("Plugin Developer", "Build & test Featurestic plugins", Icons.Outlined.DeveloperMode, GeminiPurple,
                     localSpec(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
                 McpPreset("Browser", "Control the in-app browser", Icons.Outlined.Language, GeminiBlue, localSpec("browser_mcp", "/browser")),
                 McpPreset("Terminal", "Run commands in the terminal", Icons.Outlined.Terminal, QuotaGreen, localSpec("terminal_mcp", "/terminal")),
@@ -4397,7 +4397,7 @@ private fun TerminalSubScreen(
                     )
 
                     Text(
-                        text = "AntiGem is wiping all local app data, rootfs, and settings.\n\nThe app will automatically close in $countdownSeconds seconds. Simply re-open AntiGem to start fresh.",
+                        text = "Featurestic is wiping all local app data, rootfs, and settings.\n\nThe app will automatically close in $countdownSeconds seconds. Simply re-open Featurestic to start fresh.",
                         fontSize = 13.5.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         textAlign = androidx.compose.ui.text.style.TextAlign.Center,
@@ -6387,7 +6387,7 @@ private fun DataProtectionSubScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "Why enable this? AntiGem hosts a full local Linux environment with your Node/Python packages, Git repos, and active coding projects. An accidental drag-to-uninstall from the home screen wipes all of it permanently.\n\nActivating Android Device Administrator greys out the 'Uninstall' button at the OS level across phone launchers. You can safely disable this anytime if you wish to uninstall.",
+                    text = "Why enable this? Featurestic hosts a full local Linux environment with your Node/Python packages, Git repos, and active coding projects. An accidental drag-to-uninstall from the home screen wipes all of it permanently.\n\nActivating Android Device Administrator greys out the 'Uninstall' button at the OS level across phone launchers. You can safely disable this anytime if you wish to uninstall.",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     lineHeight = 16.sp
@@ -6532,7 +6532,7 @@ private fun DataProtectionSubScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
                 Text(
-                    text = "When enabled (default), tapping 'Clear Data' in Android's phone Settings > App Info opens AntiGem's Safe Space Manager instead of wiping everything instantly with one click. This prevents accidental wipes and allows safe cache-only cleanup.\n\nYou can toggle this off anytime if you prefer the standard raw Android 'Clear Data' button.",
+                    text = "When enabled (default), tapping 'Clear Data' in Android's phone Settings > App Info opens Featurestic's Safe Space Manager instead of wiping everything instantly with one click. This prevents accidental wipes and allows safe cache-only cleanup.\n\nYou can toggle this off anytime if you prefer the standard raw Android 'Clear Data' button.",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     lineHeight = 16.sp
@@ -6565,7 +6565,7 @@ private fun DataProtectionSubScreen(
             title = { Text("Disable Uninstall Protection?") },
             text = {
                 Text(
-                    "This will remove AntiGem's Device Admin status. The app will become vulnerable to accidental home-screen uninstallation.",
+                    "This will remove Featurestic's Device Admin status. The app will become vulnerable to accidental home-screen uninstallation.",
                     fontSize = 13.sp
                 )
             },
@@ -8452,14 +8452,14 @@ private fun AboutSubScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 com.example.gemini.ui.components.AppIconImage(
-                    contentDescription = "AntiGem",
+                    contentDescription = "Featurestic",
                     modifier = Modifier
                         .size(64.dp)
                         .clip(RoundedCornerShape(16.dp))
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "AntiGem",
+                    text = "Featurestic",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -8702,8 +8702,8 @@ private fun AboutSubScreen(
                                         updateCheckResultText = null
                                     } else {
                                         isUpdateCheckError = false
-                                        updateCheckResultText = "AntiGem is up to date (v${BuildConfig.VERSION_NAME})."
-                                        Toast.makeText(context, "AntiGem is up to date!", Toast.LENGTH_SHORT).show()
+                                        updateCheckResultText = "Featurestic is up to date (v${BuildConfig.VERSION_NAME})."
+                                        Toast.makeText(context, "Featurestic is up to date!", Toast.LENGTH_SHORT).show()
                                     }
                                 }.onFailure { err ->
                                     isUpdateCheckError = true
@@ -8909,7 +8909,7 @@ private fun AboutSubScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/santoshkurmi/antigem"))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ravipacharpro-jpg/Featurestic"))
                             context.startActivity(intent)
                         }
                 ) {
@@ -8936,7 +8936,7 @@ private fun AboutSubScreen(
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "github.com/santoshkurmi/antigem",
+                                    text = "github.com/ravipacharpro-jpg/Featurestic",
                                     fontSize = 11.sp,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
@@ -8957,7 +8957,7 @@ private fun AboutSubScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/santoshkurmi/antigem/releases"))
+                            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/ravipacharpro-jpg/Featurestic/releases"))
                             context.startActivity(intent)
                         }
                 ) {

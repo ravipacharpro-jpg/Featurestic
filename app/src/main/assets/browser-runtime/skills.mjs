@@ -91,7 +91,7 @@ export function callSkillTool(dir, tool, args) {
 /** Server instructions for MCP `initialize`; clients that support them show this to the model. */
 export function skillInstructions(name, skills) {
   if (!skills.length) return undefined;
-  return [`This server is the custom AntiGem plugin "${name}". It includes skills: guides for doing tasks with its tools.`,
+  return [`This server is the custom Featurestic plugin "${name}". It includes skills: guides for doing tasks with its tools.`,
     'Before using its other tools for a task, find the matching skill below and read it with get_skill. Open detail files with get_skill_file only when the skill refers to them.',
     'Skills:', ...skills.slice(0, 60).map(s => `- ${s.name}${s.description ? ': ' + s.description : ''}`),
     ...(skills.length > 60 ? [`- …and ${skills.length - 60} more (call get_skills)`] : [])].join('\n');

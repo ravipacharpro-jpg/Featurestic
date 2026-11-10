@@ -771,7 +771,7 @@ private fun ProviderEditor(
                     EditorSection("Advanced", "Extra request headers and environment variables for this provider's chats.") {
                         OutlinedTextField(
                             headers, { headers = it }, label = { Text("Headers (one per line)") }, minLines = 2, maxLines = 6,
-                            placeholder = { Text("X-Title: AntiGem\nHTTP-Referer: https://example.com") },
+                            placeholder = { Text("X-Title: Featurestic\nHTTP-Referer: https://example.com") },
                             textStyle = MaterialTheme.typography.bodySmall.copy(fontFamily = FontFamily.Monospace), modifier = Modifier.fillMaxWidth()
                         )
                         OutlinedTextField(

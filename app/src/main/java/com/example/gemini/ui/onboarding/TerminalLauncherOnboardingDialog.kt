@@ -123,7 +123,7 @@ fun TerminalLauncherOnboardingDialog(
                             horizontalArrangement = Arrangement.SpaceEvenly,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Icon 1: AntiGem (Main App)
+                            // Icon 1: Featurestic (Main App)
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 modifier = Modifier.width(90.dp)
@@ -136,13 +136,13 @@ fun TerminalLauncherOnboardingDialog(
                                     contentAlignment = Alignment.Center
                                 ) {
                                     com.example.gemini.ui.components.AppIconImage(
-                                        contentDescription = "AntiGem",
+                                        contentDescription = "Featurestic",
                                         modifier = Modifier.matchParentSize()
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = "AntiGem",
+                                    text = "Featurestic",
                                     fontSize = 11.5.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -318,7 +318,7 @@ fun TerminalLauncherOnboardingDialog(
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "Modern unified icon matching AntiGem",
+                                        text = "Modern unified icon matching Featurestic",
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                     )

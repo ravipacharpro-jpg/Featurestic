@@ -34,7 +34,7 @@ object GitHubManager {
     /** Extra scopes on top of gh's defaults (repo, read:org, gist): workflow lets git push .github/workflows files. */
     private const val EXTRA_SCOPES = "workflow"
     private const val LOGIN_PID_FILE = "\"\${TMPDIR:-/tmp}/antigem-gh-login.pid\""
-    const val TOKEN_URL = "https://github.com/settings/tokens/new?scopes=repo,read:org,gist,workflow&description=AntiGem"
+    const val TOKEN_URL = "https://github.com/settings/tokens/new?scopes=repo,read:org,gist,workflow&description=Featurestic"
     const val INSTALL_DOCS_URL = "https://github.com/cli/cli#installation"
 
     data class Account(

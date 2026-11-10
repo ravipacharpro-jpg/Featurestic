@@ -1,0 +1,11 @@
+Featurestic is a modified build of AntiGem.
+
+  Original work: AntiGem — Copyright (C) 2026 Santosh Kurmi
+  https://github.com/Santoshkurmi/antigem
+  Licensed under the GNU General Public License v3.0 or later.
+
+Changes in this repository: rebranding (name, icon, splash, links), the update
+channel (GitHub releases of ravipacharpro-jpg/Featurestic), analytics removed, and small UI fixes.
+This is not an official AntiGem release and is not endorsed by its author.
+
+Source code: https://github.com/ravipacharpro-jpg/Featurestic

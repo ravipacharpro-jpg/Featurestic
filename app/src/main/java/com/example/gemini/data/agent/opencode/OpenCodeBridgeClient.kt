@@ -224,7 +224,7 @@ class OpenCodeBridgeClient(private val bridge: AgyBridgeService = AgyBridgeServi
         post("/integration/$integrationId/connect/oauth", kotlinx.serialization.json.buildJsonObject {
             put("methodID", kotlinx.serialization.json.JsonPrimitive(methodId))
             if (answer.isNotEmpty()) put("answer", JsonObject(answer))
-            put("label", kotlinx.serialization.json.JsonPrimitive("Added from AntiGem"))
+            put("label", kotlinx.serialization.json.JsonPrimitive("Added from Featurestic"))
         }).mapCatching { OpenCodeAuth.attempt(it.obj()) ?: error("OpenCode did not start the sign-in") }
 
     suspend fun oauthStatus(integrationId: String, attemptId: String): Result<OpenCodeAuth.AttemptStatus> =
@@ -244,10 +244,10 @@ class OpenCodeBridgeClient(private val bridge: AgyBridgeService = AgyBridgeServi
         post("/integration/$integrationId/connect/external", kotlinx.serialization.json.buildJsonObject {
             put("methodID", kotlinx.serialization.json.JsonPrimitive(methodId))
             if (answer.isNotEmpty()) put("answer", JsonObject(answer))
-            put("label", kotlinx.serialization.json.JsonPrimitive("Added from AntiGem"))
+            put("label", kotlinx.serialization.json.JsonPrimitive("Added from Featurestic"))
         }).map { }
 
-    suspend fun connectKey(integrationId: String, key: String, answer: Map<String, JsonElement> = emptyMap(), label: String = "Added from AntiGem"): Result<Unit> =
+    suspend fun connectKey(integrationId: String, key: String, answer: Map<String, JsonElement> = emptyMap(), label: String = "Added from Featurestic"): Result<Unit> =
         post("/integration/$integrationId/connect/key", kotlinx.serialization.json.buildJsonObject {
             put("key", kotlinx.serialization.json.JsonPrimitive(key))
             if (answer.isNotEmpty()) put("answer", JsonObject(answer))
