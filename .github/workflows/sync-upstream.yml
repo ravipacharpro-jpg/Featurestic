@@ -99,3 +99,4 @@ jobs:
           fi
           echo "Dispatching release build for $VERSION"
           gh workflow run release.yml --ref master
+
