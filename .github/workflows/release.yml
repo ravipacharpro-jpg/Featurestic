@@ -56,6 +56,25 @@ jobs:
           fi
           echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > app/release.jks
 
+      - name: Diagnose dependency resolution
+        continue-on-error: true
+        run: |
+          set -x
+          getent ahostsv4 repo.maven.apache.org | head -3
+          getent ahostsv6 repo.maven.apache.org | head -3
+          env | grep -i proxy || true
+          cat "$HOME/.gradle/gradle.properties" 2>/dev/null || true
+          ls "$HOME/.gradle" || true
+          for u in \
+            https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.2.0/kotlin-stdlib-2.2.0.pom \
+            https://repo1.maven.org/maven2/org/jetbrains/kotlin/kotlin-stdlib/2.2.0/kotlin-stdlib-2.2.0.pom \
+            https://plugins.gradle.org/m2/org/jetbrains/kotlin/kotlin-stdlib/2.2.0/kotlin-stdlib-2.2.0.pom \
+            https://dl.google.com/dl/android/maven2/com/android/tools/build/gradle/9.0.1/gradle-9.0.1.pom ; do
+            printf '%s -> ' "$u"
+            curl -sS -o /dev/null -w '%{http_code} %{remote_ip} %{time_total}s\n' --max-time 30 "$u" || echo "curl failed"
+          done
+          ./gradlew --version || true
+
       - name: Build Release APKs
         run: |
           chmod +x gradlew scripts/build_all_apks.sh
