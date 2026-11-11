@@ -113,6 +113,8 @@ fun ChatHistoryDrawer(
     onOpenSettings: () -> Unit,
     /** Opens the floating theme picker (a palette button next to Settings; hidden when null). */
     onOpenThemes: (() -> Unit)? = null,
+    /** Connect to PC's button next to Themes (only while the feature is on; null hides it). */
+    pcButton: (@Composable () -> Unit)? = null,
     onLogin: () -> Unit = {},
     onLogout: () -> Unit = {},
     onCheckAuth: () -> Unit = {},
@@ -1249,6 +1251,9 @@ fun ChatHistoryDrawer(
                     }
                 }
 
+                // Connect to PC: which PC is in use, switch, add one
+                pcButton?.invoke()
+
                 // keeps the profile / login button on the right
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -1737,7 +1742,8 @@ private fun ChatHistoryItemRow(
             )
         }
 
-        Box {
+        // a read-only chat (a Claude Code subagent) has nothing to do but open it
+        if (!conv.readOnly) Box {
             IconButton(
                 onClick = { menuExpanded = true },
                 modifier = Modifier.size(26.dp)
