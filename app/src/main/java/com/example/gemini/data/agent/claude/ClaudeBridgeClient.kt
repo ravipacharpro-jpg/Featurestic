@@ -83,7 +83,7 @@ class ClaudeBridgeClient(
     }
 
     /**
-     * AntiGem's VS Code bridge (Connect to PC) lists a chat's subagent runs inside the chat ("subagents") instead of as
+     * Featurestic's VS Code bridge (Connect to PC) lists a chat's subagent runs inside the chat ("subagents") instead of as
      * read-only chats of their own like the app's bridge. They become the same "agent-<id>" entries here (nested under
      * their chat, or the subagent that started them), and [subagentParents] remembers which chat holds each transcript.
      */

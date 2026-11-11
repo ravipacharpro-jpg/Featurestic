@@ -632,7 +632,7 @@ object RemoteServerManager {
     }
 
     /**
-     * Connect to PC: the bridge on the PC belongs to AntiGem in VS Code. Only connect (SSH, tunnels, token) and check
+     * Connect to PC: the bridge on the PC belongs to Featurestic in VS Code. Only connect (SSH, tunnels, token) and check
      * that it answers; never install, start or stop anything there.
      */
     private suspend fun attachToPc() {
@@ -642,7 +642,7 @@ object RemoteServerManager {
             _detail.value = "Connecting to ${pc.pcName}…"
             val s = session()
             syncTunnels(s)
-            _detail.value = "Checking AntiGem on ${pc.pcName}…"
+            _detail.value = "Checking Featurestic on ${pc.pcName}…"
             var up = false
             for (i in 0 until 12) {
                 if (bridgeReachable()) { up = true; break }
@@ -653,7 +653,7 @@ object RemoteServerManager {
                 LocalServerManager.publishRemoteStatus(LocalServerStatus.Running())
             } else {
                 LocalServerManager.publishRemoteStatus(LocalServerStatus.Error(
-                    "Connected to ${pc.pcName}, but AntiGem's bridge is not running there. Open VS Code with AntiGem on the PC " +
+                    "Connected to ${pc.pcName}, but Featurestic's bridge is not running there. Open VS Code with Featurestic on the PC " +
                         "(if it was stopped, press ▶ in its side bar), then tap Retry."
                 ))
             }

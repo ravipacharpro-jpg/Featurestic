@@ -310,7 +310,7 @@ data class ClaudeSessionSummary(
     val parent_id: String = "",
     val agent_type: String = "",
     /**
-     * The chat's subagent runs, as AntiGem's VS Code bridge lists them (inside the chat instead of as chats of their
+     * The chat's subagent runs, as Featurestic's VS Code bridge lists them (inside the chat instead of as chats of their
      * own); ClaudeBridgeClient turns them into "agent-<id>" entries like the app's bridge sends.
      */
     val subagents: List<ClaudeSubagentRun> = emptyList()

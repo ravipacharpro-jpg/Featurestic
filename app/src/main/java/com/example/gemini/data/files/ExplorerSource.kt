@@ -91,7 +91,7 @@ object PhoneSource : ExplorerSource {
     private fun noAccess(f: File): String {
         val ctx = appContext
         val allowed = ctx != null && com.example.gemini.data.local.TermuxStorageSetupManager.hasStoragePermission(ctx)
-        return if (!allowed && f.absolutePath.startsWith("/storage")) "Allow AntiGem to access this phone's storage to see these files."
+        return if (!allowed && f.absolutePath.startsWith("/storage")) "Allow Featurestic to access this phone's storage to see these files."
         else "Cannot open ${f.absolutePath}"
     }
 
@@ -118,7 +118,7 @@ object PhoneSource : ExplorerSource {
             val root = f.absolutePath.substringBefore("/Android/")
             if (root != home && root.startsWith("/storage/")) add("SD card (${root.substringAfterLast('/')})", File(root), "removable")
         }
-        appContext?.let { add("AntiGem home", com.example.gemini.data.local.LocalEnvironmentManager.getHomeDir(it), "home") }
+        appContext?.let { add("Featurestic home", com.example.gemini.data.local.LocalEnvironmentManager.getHomeDir(it), "home") }
         home to out
     }
 

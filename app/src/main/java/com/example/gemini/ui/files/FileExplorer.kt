@@ -831,7 +831,7 @@ fun FileExplorer(
             when {
                 !storageOk && (!loaded || entries.isEmpty()) -> EmptyState(
                     Icons.Outlined.PhoneAndroid, "Allow access to this phone's files",
-                    "AntiGem needs \"All files access\" to show and copy this phone's storage."
+                    "Featurestic needs \"All files access\" to show and copy this phone's storage."
                 ) {
                     Button(onClick = { com.example.gemini.data.local.TermuxStorageSetupManager.requestStoragePermission(context) }) { Text("Allow") }
                 }

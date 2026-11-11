@@ -82,9 +82,9 @@ private fun SwitchConfirm(target: PairedPc?, onDismiss: () -> Unit) {
         title = { Text(if (target != null) "Use ${target.name}?" else "$back?", fontWeight = FontWeight.Bold, fontSize = 17.sp) },
         text = {
             Text(
-                if (target != null) "AntiGem reopens and connects to ${target.name}: its agents and chats show here. " +
+                if (target != null) "Featurestic reopens and connects to ${target.name}: its agents and chats show here. " +
                     "Agents running on this phone stop; nothing on the PC is stopped."
-                else "AntiGem reopens with your own settings again. The PC keeps running its agents for VS Code.",
+                else "Featurestic reopens with your own settings again. The PC keeps running its agents for VS Code.",
                 fontSize = 13.5.sp, lineHeight = 19.sp
             )
         },
@@ -131,7 +131,7 @@ fun ConnectPcScreen(cardBg: Color, cardBorder: BorderStroke) {
                 Column(Modifier.weight(1f)) {
                     Text("Connect to PC", fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
                     Text(
-                        "Use the agents running on your PC (AntiGem in VS Code) from this phone: the same chats on both.",
+                        "Use the agents running on your PC (Featurestic in VS Code) from this phone: the same chats on both.",
                         fontSize = 12.sp, lineHeight = 16.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f)
                     )
                 }
@@ -183,10 +183,10 @@ fun ConnectPcScreen(cardBg: Color, cardBorder: BorderStroke) {
             Card(cardBg, cardBorder) {
                 Text("ON THE PC (ONCE)", fontSize = 11.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f))
-                Step(1, "Install AntiGem in VS Code and open it once (it starts the agents).")
+                Step(1, "Install Featurestic in VS Code and open it once (it starts the agents).")
                 Step(2, "Turn on the PC's SSH server. Linux: sudo systemctl enable --now sshd (Ubuntu: install openssh-server first). " +
                     "macOS: System Settings › General › Sharing › Remote Login. Windows: Settings › Optional features › OpenSSH Server.")
-                Step(3, "In AntiGem on the PC open Connect phone. It shows a 6-digit code.")
+                Step(3, "In Featurestic on the PC open Connect phone. It shows a 6-digit code.")
                 Step(4, "Here: Add a PC, pick it from the list and type the code. Both must be on the same Wi-Fi.")
                 Hint("The phone gets its own key for the PC (no PC password is stored here). To block a phone, remove it in VS Code › Connect phone.")
             }
@@ -201,7 +201,7 @@ fun ConnectPcScreen(cardBg: Color, cardBorder: BorderStroke) {
         AlertDialog(
             onDismissRequest = { confirmOff = false },
             title = { Text("Turn off Connect to PC?", fontWeight = FontWeight.Bold, fontSize = 17.sp) },
-            text = { Text("You are using ${active?.name}. AntiGem reopens with your own settings; the paired PCs are kept for later.", fontSize = 13.5.sp) },
+            text = { Text("You are using ${active?.name}. Featurestic reopens with your own settings; the paired PCs are kept for later.", fontSize = 13.5.sp) },
             confirmButton = {
                 Button(onClick = {
                     PcConnect.setEnabled(false)
@@ -231,7 +231,7 @@ fun ConnectPcScreen(cardBg: Color, cardBorder: BorderStroke) {
                 Text(
                     (if (inUse) "You are using it now: switch back first. " else "") +
                         "This phone forgets the PC and its key for it. To block this phone completely, also remove it on the PC " +
-                        "(VS Code › AntiGem › Connect phone).",
+                        "(VS Code › Featurestic › Connect phone).",
                     fontSize = 13.5.sp, lineHeight = 19.sp
                 )
             },
@@ -341,7 +341,7 @@ fun AddPcDialog(onDismiss: () -> Unit, onConnect: (PairedPc) -> Unit) {
                             Spacer(Modifier.width(8.dp))
                             Text("Paired with ${s.pc.name}", fontWeight = FontWeight.SemiBold, fontSize = 15.sp)
                         }
-                        Hint("Connect now to use its agents here (AntiGem reopens), or later from the PC button in the side bar.")
+                        Hint("Connect now to use its agents here (Featurestic reopens), or later from the PC button in the side bar.")
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             OutlinedButton(onClick = onDismiss, modifier = Modifier.weight(1f)) { Text("Later") }
                             Button(onClick = { onConnect(s.pc) }, modifier = Modifier.weight(1f)) { Text("Connect now") }
@@ -379,7 +379,7 @@ private fun PickPc(onPick: (name: String, host: String, port: Int) -> Unit) {
         }
     }
 
-    Text("On the PC, open AntiGem in VS Code › Connect phone. It shows up here:", fontSize = 13.sp, lineHeight = 18.sp)
+    Text("On the PC, open Featurestic in VS Code › Connect phone. It shows up here:", fontSize = 13.sp, lineHeight = 18.sp)
     if (nearby.isEmpty()) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
