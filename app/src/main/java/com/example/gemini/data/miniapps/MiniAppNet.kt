@@ -52,7 +52,7 @@ object MiniAppNet {
     class Owner(val context: Context, val app: MiniApp)
     /** Tag for a request that must not send or store cookies (fetch with credentials: "omit"). */
     object NoCookies
-    /** Tag for AntiGem's own requests made for an app (the developer tools' scripts): not limited to the app's hosts. */
+    /** Tag for Featurestic's own requests made for an app (the developer tools' scripts): not limited to the app's hosts. */
     object SystemRequest
 
     // ---------------- where an app may connect ----------------
@@ -185,7 +185,7 @@ object MiniAppNet {
             .build()
     }
 
-    /** AntiGem's own requests for an app (developer tools): any host, but still never this phone's servers. */
+    /** Featurestic's own requests for an app (developer tools): any host, but still never this phone's servers. */
     private fun systemClient(context: Context, app: MiniApp): OkHttpClient = clients.getOrPut("\u0000system:" + app.id) {
         base.newBuilder().socketFactory(GuardedSockets(context.applicationContext, app)).build()
     }

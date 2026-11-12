@@ -107,7 +107,7 @@ fun AgentSkillsPanel(agent: AgentKind, accent: Color, onChanged: () -> Unit = {}
     var inspecting by remember { mutableStateOf(false) }
     var found by remember { mutableStateOf<RepoSkillsInspectResponse?>(null) }
     var findError by remember { mutableStateOf<String?>(null) }
-    // a repository AntiGem can't add by itself: (source, why) for the "Set up with AI" dialog
+    // a repository Featurestic can't add by itself: (source, why) for the "Set up with AI" dialog
     var aiSetup by remember { mutableStateOf<Pair<String, String?>?>(null) }
     val picked = remember { mutableStateMapOf<String, Boolean>() } // repository path → add it
     var installing by remember { mutableStateOf(false) }

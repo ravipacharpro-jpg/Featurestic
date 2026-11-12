@@ -225,7 +225,7 @@ internal fun openOptionsFor(entry: ExplorerEntry, ideAvailable: Boolean, content
         k == FileKind.IMAGE || k == FileKind.VIDEO -> null
         else -> OpenOption(OpenChoice.IDE, Icons.Outlined.Code, "Code editor", "Not a text file: it may not display or save correctly", recommended = false, warn = true)
     }
-    // a mini app package goes to AntiGem's own installer (FileOpener), like an .apk to Android's
+    // a mini app package goes to Featurestic's own installer (FileOpener), like an .apk to Android's
     val agapp = entry.name.endsWith(".agapp", ignoreCase = true)
     val external = OpenOption(
         OpenChoice.EXTERNAL,

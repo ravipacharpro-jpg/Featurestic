@@ -29,7 +29,7 @@ import kotlin.coroutines.resume
 
 /**
  * The Mini App Developer MCP (`/mini_app_developer`, like the plugin developer MCP): an agent builds, runs, debugs,
- * signs and installs mini apps on this phone. The guide is served from this AntiGem version itself (miniapp_guide).
+ * signs and installs mini apps on this phone. The guide is served from this Featurestic version itself (miniapp_guide).
  *
  * Boundaries:
  *  - files, eval, screenshot, console, data and permission tools only touch development apps (~/mini-apps). An
@@ -40,8 +40,8 @@ import kotlin.coroutines.resume
  */
 object MiniAppDevMcp {
     const val INSTRUCTIONS =
-        "Build, run, debug, sign and install AntiGem mini apps (HTML/CSS/JS apps with a native AntiGem.* SDK) on this phone. " +
-            "Start with miniapp_guide: it serves the guide bundled with this AntiGem version (topic README, then getting-started, manifest " +
+        "Build, run, debug, sign and install Featurestic mini apps (HTML/CSS/JS apps with a native Featurestic.* SDK) on this phone. " +
+            "Start with miniapp_guide: it serves the guide bundled with this Featurestic version (topic README, then getting-started, manifest " +
             "and the API pages you need). Follow it instead of assuming browser, PWA or Cordova behaviour. " +
             "Loop: miniapp_create → miniapp_write_files → miniapp_validate → miniapp_open → miniapp_console / miniapp_eval / miniapp_screenshot → fix " +
             "(open pages reload by themselves when files change). Ship: miniapp_key_status → miniapp_sign → miniapp_install (the user confirms on the phone). " +
@@ -69,7 +69,7 @@ object MiniAppDevMcp {
 
     fun tools(): JSONArray = JSONArray().apply {
         put(tool("miniapp_guide",
-            "START HERE. The mini app guide bundled with this AntiGem version: architecture, manifest, permissions, every AntiGem.* API, " +
+            "START HERE. The mini app guide bundled with this Featurestic version: architecture, manifest, permissions, every Featurestic.* API, " +
                 "UI kit, signing, shared data, this MCP. No topic: the README with the table of contents. Use query to search all pages.",
             emptyList(), true,
             "topic" to prop("string", "Page name, e.g. README, getting-started, manifest, permissions, api-reference, storage, files, network, ui, notifications, background, intents, threads, shared-data, signing-and-distribution, developer-mcp, troubleshooting."),
@@ -88,7 +88,7 @@ object MiniAppDevMcp {
             "name" to prop("string", "Display name."),
             "folder" to prop("string", "Folder name in ~/mini-apps (default: from the name)."),
             "description" to prop("string", "One line shown in Mini Apps."),
-            "theme_color" to prop("string", "Splash / status bar color like #2E7D32 (default: follow the AntiGem theme).")))
+            "theme_color" to prop("string", "Splash / status bar color like #2E7D32 (default: follow the Featurestic theme).")))
         put(tool("miniapp_read_file",
             "List a development app's files (no path), or read one text file (paged).",
             listOf("app_id"), true, appIdProp,
@@ -125,7 +125,7 @@ object MiniAppDevMcp {
             "since" to prop("integer", "Only entries after this time (ms), e.g. the \"now\" of a previous call."),
             "clear" to prop("boolean", "Clear the buffer after reading.")))
         put(tool("miniapp_eval",
-            "Run JavaScript in the development app's page on screen and return the result: read the DOM, click buttons, call AntiGem.* APIs, check state. " +
+            "Run JavaScript in the development app's page on screen and return the result: read the DOM, click buttons, call Featurestic.* APIs, check state. " +
                 "The code is the body of an async function (use return / await); a bare expression returns its value. " +
                 "Console lines printed meanwhile are returned too. Opens the app first if needed.",
             listOf("app_id", "code"), false, appIdProp,
@@ -150,7 +150,7 @@ object MiniAppDevMcp {
             listOf("developer"), false,
             "developer" to prop("string", "Developer or team name shown to people who install the apps.")))
         put(tool("miniapp_key_backup",
-            "Open the key backup on the phone: the user types a password there and the key is saved to Download/AntiGem (kept even if AntiGem is uninstalled) " +
+            "Open the key backup on the phone: the user types a password there and the key is saved to Download/Featurestic (kept even if Featurestic is uninstalled) " +
                 "and can be shared to Drive or email. You never see the key or the password.",
             emptyList(), false))
         put(tool("miniapp_sign",
@@ -158,7 +158,7 @@ object MiniAppDevMcp {
                 "Bump the manifest version for every release.",
             listOf("app_id"), false, appIdProp))
         put(tool("miniapp_install",
-            "Open AntiGem's install screen on the phone for an .agapp package; the user confirms (Install / Update). Returns what the install would do " +
+            "Open Featurestic's install screen on the phone for an .agapp package; the user confirms (Install / Update). Returns what the install would do " +
                 "(new, update, downgrade, or why it's refused). Note: a package can't use the id of a development app in ~/mini-apps.",
             listOf("package_path"), false,
             "package_path" to prop("string", "Path of the .agapp, e.g. ~/mini-apps-dist/com.alex.budget-1.0.0.agapp (from miniapp_sign)."),
@@ -259,7 +259,7 @@ object MiniAppDevMcp {
             out.put(JSONObject()
                 .put("id", a.id).put("name", a.name).put("version", a.version)
                 .put("kind", if (a.signed) "installed" else "development")
-                .put("location", if (a.signed) "installed by AntiGem (read-only)" else show(context, a.folder))
+                .put("location", if (a.signed) "installed by Featurestic (read-only)" else show(context, a.folder))
                 .put("entry", a.entry)
                 .put("runs", if (a.signed) !a.tampered else devMode)
                 .apply { if (a.signed) put("signed_by", "${a.developer} (${MiniAppSigning.shortFingerprint(a.signer.orEmpty())})") }
@@ -529,7 +529,7 @@ object MiniAppDevMcp {
         if (args.optBoolean("clear")) MiniAppConsole.clear(a.id)
         val out = JSONObject().put("app", a.id).put("now", now).put("entries", lines)
         if (entries.isEmpty() && since == 0L) {
-            // nothing in memory (AntiGem restarted): the log file keeps the last runs
+            // nothing in memory (Featurestic restarted): the log file keeps the last runs
             val f = File(MiniApps.dataDir(context, a.id), "console.log")
             if (f.isFile) out.put("from_log_file", JSONArray(f.readLines().takeLast(limit)))
         }
@@ -651,7 +651,7 @@ object MiniAppDevMcp {
             .put("backed_up", b != null)
             .apply {
                 if (b != null) put("backup", JSONObject().put("where", b.path).put("at", java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US).format(java.util.Date(b.at))))
-                else put("warning", "The key is NOT backed up. If AntiGem is uninstalled, its data cleared or the phone lost, apps signed with it can never be updated. " +
+                else put("warning", "The key is NOT backed up. If Featurestic is uninstalled, its data cleared or the phone lost, apps signed with it can never be updated. " +
                     "Call miniapp_key_backup: the user saves it on the phone with a password.")
             }
     }
@@ -669,7 +669,7 @@ object MiniAppDevMcp {
         if (!MiniAppSigning.hasKey(context)) throw ToolError("There is no developer key yet: miniapp_key_create")
         withContext(Dispatchers.Main) { context.startActivity(MiniAppsActivity.keyIntent(context, "backup")) }
         return JSONObject().put("opened", "key backup")
-            .put("note", "The backup screen is open on the phone. The user types a password there; the key is saved to Download/AntiGem and can be shared to Drive or email. " +
+            .put("note", "The backup screen is open on the phone. The user types a password there; the key is saved to Download/Featurestic and can be shared to Drive or email. " +
                 "Ask them to do it, then check miniapp_key_status. Never ask for the password.")
     }
 

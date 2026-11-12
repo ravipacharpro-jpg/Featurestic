@@ -13,8 +13,8 @@ import androidx.compose.runtime.setValue
 import com.example.gemini.theme.ThemeManager
 
 /**
- * AntiGem's mini app installer, the way Android's package installer is for .apk files: tapping an .agapp in
- * WhatsApp, Telegram, Gmail, Files, a browser's downloads or AntiGem's own file explorer (or sharing one to
+ * Featurestic's mini app installer, the way Android's package installer is for .apk files: tapping an .agapp in
+ * WhatsApp, Telegram, Gmail, Files, a browser's downloads or Featurestic's own file explorer (or sharing one to
  * "Mini app") opens this over the app it came from: install / update screen, then Open / Done.
  */
 class MiniAppInstallActivity : ComponentActivity() {
@@ -47,7 +47,7 @@ class MiniAppInstallActivity : ComponentActivity() {
         return uri?.takeIf { it.scheme == "content" || it.scheme == "file" && !isPrivate(it) }?.let { InstallSource.FromUri(it) }
     }
 
-    /** Another app can't point the installer at AntiGem's own private files with a file:// path. */
+    /** Another app can't point the installer at Featurestic's own private files with a file:// path. */
     private fun isPrivate(uri: Uri): Boolean = runCatching {
         val path = java.io.File(uri.path ?: return true).canonicalPath
         val own = java.io.File(applicationInfo.dataDir).canonicalPath

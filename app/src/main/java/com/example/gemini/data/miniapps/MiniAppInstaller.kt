@@ -11,7 +11,7 @@ import java.util.zip.ZipFile
  *  - the first install records the developer's key; an update must be signed with the same key
  *  - a lower version needs the user's explicit OK
  *  - an id used by a development app (a folder in ~/mini-apps) can't be taken by a package
- *  - installed apps live in AntiGem's private files, and every file they load is checked against the signed hashes
+ *  - installed apps live in Featurestic's private files, and every file they load is checked against the signed hashes
  *    when it is served: a changed or extra file never runs under the developer's name
  * Development apps (folders in ~/mini-apps, unsigned, editable) are separate: they never come from a package.
  */

@@ -31,7 +31,7 @@ interface MiniAppHost {
     suspend fun capture(video: Boolean): Uri?
     suspend fun pickDate(value: String, title: String): String?
     suspend fun pickTime(value: String): String?
-    /** A folder on this phone, chosen in AntiGem's file explorer (real path), or null when cancelled. */
+    /** A folder on this phone, chosen in Featurestic's file explorer (real path), or null when cancelled. */
     suspend fun pickFolder(title: String): java.io.File?
     fun setStatusBar(color: String)
     fun push(path: String)

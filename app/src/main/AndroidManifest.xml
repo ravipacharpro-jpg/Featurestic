@@ -326,14 +326,14 @@
             android:exported="true"
             android:theme="@style/Theme.AntiGem.MiniApp"
             android:configChanges="uiMode|orientation|screenSize|screenLayout|smallestScreenSize" />
-        <!-- "Get apps": the mini apps of AntiGem's GitHub catalog -->
+        <!-- "Get apps": the mini apps of Featurestic's GitHub catalog -->
         <activity
             android:name="com.example.gemini.ui.miniapps.MiniAppStoreActivity"
             android:exported="false"
             android:theme="@style/Theme.AntiGem.MiniApp"
             android:configChanges="uiMode|orientation|screenSize|screenLayout|smallestScreenSize" />
         <!-- The mini app installer (like Android's for .apk): opening an .agapp from any app (WhatsApp, Telegram, Gmail,
-             Files, a browser's downloads, AntiGem's file explorer) shows the install / update screen over that app -->
+             Files, a browser's downloads, Featurestic's file explorer) shows the install / update screen over that app -->
         <activity
             android:name="com.example.gemini.ui.miniapps.MiniAppInstallActivity"
             android:exported="true"
@@ -342,7 +342,7 @@
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden">
-            <!-- the package type (AntiGem shares packages with it, servers can send it) -->
+            <!-- the package type (Featurestic shares packages with it, servers can send it) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

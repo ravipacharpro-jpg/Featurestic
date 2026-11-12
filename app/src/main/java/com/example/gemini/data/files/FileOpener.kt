@@ -55,7 +55,7 @@ object FileOpener {
             setDataAndType(uri, mime)
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_NEW_TASK)
             clipData = ClipData.newRawUri(name, uri)
-            // a mini app package: straight to AntiGem's own installer, the way a file manager hands an .apk to Android's
+            // a mini app package: straight to Featurestic's own installer, the way a file manager hands an .apk to Android's
             if (mime == com.example.gemini.data.miniapps.MiniAppSigning.MIME && !forceChooser) setClassName(context, "com.example.gemini.ui.miniapps.MiniAppInstallActivity")
         }
         return try {

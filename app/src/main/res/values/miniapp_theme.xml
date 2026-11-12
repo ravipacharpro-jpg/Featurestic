@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="miniapp_window_bg">#FFFBFE</color>
-    <!-- Mini apps draw their own splash (icon + name in the app's color): no AntiGem logo, plain window -->
+    <!-- Mini apps draw their own splash (icon + name in the app's color): no Featurestic logo, plain window -->
     <style name="Theme.AntiGem.MiniApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/miniapp_window_bg</item>
         <item name="android:windowSplashScreenBackground">@color/miniapp_window_bg</item>

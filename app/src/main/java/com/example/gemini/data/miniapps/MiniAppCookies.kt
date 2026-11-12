@@ -11,7 +11,7 @@ import java.util.concurrent.Executors
 /**
  * One mini app's cookies, like a browser profile (cookies.db in the app's data folder):
  *  - persistent cookies are saved and deleted when they expire; session cookies (no expiry) live in memory
- *    until AntiGem's process ends
+ *    until Featurestic's process ends
  *  - browser-like limits: 4 KB per cookie, 180 per domain, 3000 per app
  *  - never shared between apps; "Clear data" removes them
  * The network layer applies them on every request hop (see MiniAppNet), so an API that logs in with a cookie

@@ -32,12 +32,12 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 /**
- * Everything a mini app schedules, kept natively (AntiGem's private files, not reachable by any app) so it
+ * Everything a mini app schedules, kept natively (Featurestic's private files, not reachable by any app) so it
  * survives restarts and reboots:
  *  - reminders: notifications at exact times, with repeat rules (no app code runs)
  *  - background tasks: the app's background script runs with the app closed, periodically (WorkManager),
  *    after a delay, or at exact times (AlarmManager → WorkManager)
- * Alarms are set again after a reboot, an AntiGem update, a time or time-zone change, and whenever AntiGem starts.
+ * Alarms are set again after a reboot, an Featurestic update, a time or time-zone change, and whenever Featurestic starts.
  */
 object MiniAppScheduler {
     private const val TAG = "MiniAppScheduler"
@@ -462,7 +462,7 @@ object MiniAppScheduler {
     }
 
     /**
-     * After boot / update / time change / AntiGem start: alarms again for everything. Missed reminders (phone off)
+     * After boot / update / time change / Featurestic start: alarms again for everything. Missed reminders (phone off)
      * still show if at most 6 h late; times of day are worked out again (the time zone may have changed).
      */
     @Synchronized
@@ -513,7 +513,7 @@ class MiniAppAlarmReceiver : BroadcastReceiver() {
     }
 }
 
-/** Reboot, AntiGem update, clock or time-zone change: Android dropped (or shifted) the alarms, set them again. */
+/** Reboot, Featurestic update, clock or time-zone change: Android dropped (or shifted) the alarms, set them again. */
 class MiniAppBootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val pending = goAsync()

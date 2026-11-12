@@ -72,7 +72,7 @@ object RunManager {
             val ctx = appContext ?: return
             runCatching {
                 val pm = ctx.getSystemService(Context.POWER_SERVICE) as android.os.PowerManager
-                wakeLock = pm.newWakeLock(android.os.PowerManager.PARTIAL_WAKE_LOCK, "AntiGem:run").apply {
+                wakeLock = pm.newWakeLock(android.os.PowerManager.PARTIAL_WAKE_LOCK, "Featurestic:run").apply {
                     setReferenceCounted(false)
                     acquire(3 * 60 * 60 * 1000L)
                 }

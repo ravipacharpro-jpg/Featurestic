@@ -2443,7 +2443,7 @@ fun ChatScreen(
                         }
                     }
 
-                    // `/plu:` browses custom AntiGem plugins and their skills; custom commands join the normal list
+                    // `/plu:` browses custom Featurestic plugins and their skills; custom commands join the normal list
                     val customCommands = com.example.gemini.data.remote.CustomSlashCommands.commands.toList()
                     val installedPlugins = com.example.gemini.ui.browser.BrowserExtensionManager.instance.extensions.toList()
                     val slashSuggestions = remember(slashQuery, effectiveSlashCommands, isSlashActive, customCommands, installedPlugins) {

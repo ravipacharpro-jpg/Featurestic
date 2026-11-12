@@ -89,7 +89,7 @@ object MiniAppPackages {
         return PendingInstall(file, MiniAppInstaller.plan(context, MiniAppSigning.verify(file)))
     }
 
-    /** Copies a picked / opened / shared .agapp into AntiGem's cache and verifies it; the plan says what installing would do. */
+    /** Copies a picked / opened / shared .agapp into Featurestic's cache and verifies it; the plan says what installing would do. */
     suspend fun open(context: Context, uri: Uri): PendingInstall = withContext(Dispatchers.IO) {
         val file = File(cache(context), "pkg-${System.nanoTime()}.agapp")
         try {
@@ -134,7 +134,7 @@ object MiniAppPackages {
         return p
     }
 
-    /** Where signed packages go: ~/mini-apps-dist (the agent and the file explorer see it). Key backups go to Download/AntiGem. */
+    /** Where signed packages go: ~/mini-apps-dist (the agent and the file explorer see it). Key backups go to Download/Featurestic. */
     fun distDir(context: Context) = File(MiniApps.home(context), "mini-apps-dist").also { it.mkdirs() }
 
     fun share(context: Context, file: File, mime: String) {
@@ -144,7 +144,7 @@ object MiniAppPackages {
         context.startActivity(Intent.createChooser(send, file.name).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
-    /** Shares a package so the other phone's AntiGem opens it in its installer (WhatsApp, Telegram, email, Drive, Nearby Share…). */
+    /** Shares a package so the other phone's Featurestic opens it in its installer (WhatsApp, Telegram, email, Drive, Nearby Share…). */
     fun sharePackage(context: Context, file: File) = share(context, file, MiniAppSigning.MIME)
 }
 
@@ -336,7 +336,7 @@ private fun BackupKeyDialog(afterCreate: Boolean, onResult: (String?) -> Unit) {
         title = { Text(if (afterCreate) "Back up your new key" else "Back up the key") },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Text("The key is saved, locked with this password, to Download/AntiGem on this phone: it stays there even if AntiGem is " +
+                Text("The key is saved, locked with this password, to Download/Featurestic on this phone: it stays there even if Featurestic is " +
                     "uninstalled. Then you can also send it to Drive or email. If the key is lost, apps signed with it can never be updated.",
                     style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(bottom = 12.dp))
                 OutlinedTextField(pw, { pw = it }, singleLine = true, label = { Text("Password (8+ characters)") }, modifier = Modifier.fillMaxWidth(),
@@ -354,7 +354,7 @@ private fun BackupKeyDialog(afterCreate: Boolean, onResult: (String?) -> Unit) {
 }
 
 /**
- * The developer key: create it, back it up (password-protected .agkey in Download/AntiGem + share sheet, for a new
+ * The developer key: create it, back it up (password-protected .agkey in Download/Featurestic + share sheet, for a new
  * phone, after reinstalling, or agapp.mjs on a PC), import one. Losing it means the apps signed with it can never be
  * updated (as with an Android keystore). [startWith] "backup" opens straight at the backup (the developer MCP).
  */
@@ -419,7 +419,7 @@ fun DeveloperKeyDialog(onDismiss: () -> Unit, pickKeyFile: (onPicked: (Uri?) -> 
                     Text(MiniAppSigning.shortFingerprint(i.second), fontFamily = FontFamily.Monospace, style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                     val b = backup
-                    if (b == null) Text("Not backed up. If this key is lost (AntiGem uninstalled, data cleared, phone lost), apps signed with it can never be updated.",
+                    if (b == null) Text("Not backed up. If this key is lost (Featurestic uninstalled, data cleared, phone lost), apps signed with it can never be updated.",
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp))
                     else Text("Backed up ${java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM, java.text.DateFormat.SHORT).format(java.util.Date(b.at))}\n${b.path}",
                         style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 8.dp))

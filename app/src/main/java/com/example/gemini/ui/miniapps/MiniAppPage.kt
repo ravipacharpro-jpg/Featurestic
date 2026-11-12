@@ -537,7 +537,7 @@ class MiniAppPage(private val host: MiniAppHost, app: MiniApp, override val path
         "nav.push" -> { host.push(p.optString("path")); null }
         "nav.back" -> { host.closePage(); null }
         "nav.close" -> { host.closeApp(); null }
-        // ---- AntiGem MCP tools
+        // ---- Featurestic MCP tools
         "mcp.list", "mcp.call" -> mcp(m, p)
         // ---- dev
         "dev.console" -> { host.showConsole(); null }
@@ -642,7 +642,7 @@ class MiniAppPage(private val host: MiniAppHost, app: MiniApp, override val path
         }
     }
 
-    /** AntiGem.fs.pickFolder: the user chooses a folder in AntiGem's file explorer; the app gets the manifest's "pick" access to it. */
+    /** AntiGem.fs.pickFolder: the user chooses a folder in Featurestic's file explorer; the app gets the manifest's "pick" access to it. */
     private suspend fun pickFolder(): Any? {
         val access = app.storagePick ?: throw MiniAppError("NotAllowedError", "The manifest doesn't allow picking folders (permissions.storage.pick)")
         val folder = host.pickFolder("Choose a folder for ${app.name}") ?: return JSONObject.NULL

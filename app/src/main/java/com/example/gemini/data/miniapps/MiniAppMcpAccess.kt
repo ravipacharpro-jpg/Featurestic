@@ -5,7 +5,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 /**
- * What a mini app may do with AntiGem's MCP servers (AntiGem.mcp). The manifest asks for a whole server, only its
+ * What a mini app may do with Featurestic's MCP servers (AntiGem.mcp). The manifest asks for a whole server, only its
  * read-only tools, or a list of tools; each tool is then its own permission the user can switch off (like storage
  * folders). Servers that can control the phone (terminal, Android, browser) need the typed confirmation and, by default,
  * the user's OK before every call. A few servers are never reachable from a mini app at all.

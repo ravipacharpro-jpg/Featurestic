@@ -75,7 +75,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * "Get apps": the mini apps published in AntiGem's mini app repository (a GitHub repo with signed packages and a
+ * "Get apps": the mini apps published in Featurestic's mini app repository (a GitHub repo with signed packages and a
  * catalog). Install, update or open each; installing goes through the normal install screen (signature, version,
  * permissions), after the download was checked against the catalog.
  */

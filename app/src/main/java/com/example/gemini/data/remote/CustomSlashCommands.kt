@@ -43,9 +43,9 @@ object CustomSlashCommands {
         ),
         CustomSlashCommand(
             name = "mini_app",
-            description = "Build a mini app (an app inside AntiGem) with the Mini App Developer MCP",
+            description = "Build a mini app (an app inside Featurestic) with the Mini App Developer MCP",
             expansion = """
-                The user wants a mini app: a small app that runs inside AntiGem (HTML/CSS/JS with AntiGem's native SDK for storage, files, network, notifications and more), with its own icon and Recents card. What it should do: ${'$'}ARGUMENTS
+                The user wants a mini app: a small app that runs inside Featurestic (HTML/CSS/JS with Featurestic's native SDK for storage, files, network, notifications and more), with its own icon and Recents card. What it should do: ${'$'}ARGUMENTS
                 If that is empty or unclear, first ask what the app should do, then continue.
 
                 1. Check that you have the Mini App Developer MCP: its tools start with miniapp_ (server mini_app_developer_mcp). If you don't have them, stop and tell the user to open this agent's MCP settings, add the "Mini App Developer" preset, then reload tools or start a new chat and send this command again.

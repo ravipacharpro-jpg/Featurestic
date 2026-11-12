@@ -48,7 +48,7 @@ object MiniAppStore {
             if (!r.isSuccessful) throw MiniAppError("NetworkError", "The catalog answered ${r.code}")
             val body = r.body?.string() ?: throw MiniAppError("NetworkError", "Empty catalog")
             val o = runCatching { JSONObject(body) }.getOrElse { throw MiniAppError("DataError", "The catalog isn't valid JSON") }
-            if (o.optInt("format", 1) > 1) throw MiniAppError("NotSupportedError", "This catalog needs a newer AntiGem")
+            if (o.optInt("format", 1) > 1) throw MiniAppError("NotSupportedError", "This catalog needs a newer Featurestic")
             val arr = o.optJSONArray("apps") ?: JSONArray()
             Catalog(o.optString("name").ifBlank { "Mini apps" }, u.toString(),
                 (0 until arr.length()).mapNotNull { arr.optJSONObject(it) }.mapNotNull { a -> runCatching { entry(u, a) }.getOrNull() })

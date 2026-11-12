@@ -163,7 +163,7 @@ private fun MiniAppsScreen(activity: MiniAppsActivity, onBack: () -> Unit) {
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
             )
-            // the developer key lives only in AntiGem's private storage until it is backed up
+            // the developer key lives only in Featurestic's private storage until it is backed up
             if (backupNeeded) androidx.compose.material3.Card(
                 onClick = { keyStart = "backup"; keyDialog = true },
                 colors = androidx.compose.material3.CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.errorContainer),

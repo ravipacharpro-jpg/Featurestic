@@ -269,7 +269,7 @@ open class MiniAppActivity : ComponentActivity(), MiniAppHost {
 
     override fun onRendererGone(p: MiniAppPage) {
         if (p !== page) return
-        // a renderer crash must not take AntiGem down: start this page again
+        // a renderer crash must not take Featurestic down: start this page again
         startActivity(Intent(intent))
         finish()
     }
@@ -300,7 +300,7 @@ open class MiniAppActivity : ComponentActivity(), MiniAppHost {
         return MiniAppPermissions.state(this, app, name)
     }
 
-    /** AntiGem's own file explorer, to pick a folder on this phone; the real (canonical) folder, or null. */
+    /** Featurestic's own file explorer, to pick a folder on this phone; the real (canonical) folder, or null. */
     override suspend fun pickFolder(title: String): java.io.File? {
         val d = CompletableDeferred<Pair<String, com.example.gemini.data.files.ExplorerSide>?>()
         folderPick = d to title

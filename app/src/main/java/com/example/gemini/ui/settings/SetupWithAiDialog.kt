@@ -54,7 +54,7 @@ import com.example.gemini.ui.components.ClaudeAccent
 import com.example.gemini.ui.components.CodexAccent
 import com.example.gemini.ui.components.OpenCodeAccent
 
-/** What the user wants out of a repository AntiGem could not install by itself. */
+/** What the user wants out of a repository Featurestic could not install by itself. */
 enum class RepoSetupKind(val label: String) { ALL("All"), SKILLS("Skills"), PLUGINS("Plugin / marketplace") }
 
 private fun agentName(agent: AgentKind) = when (agent) {
@@ -149,7 +149,7 @@ fun repoSetupPrompt(source: String, agent: AgentKind, kind: RepoSetupKind): Stri
 }
 
 /**
- * Shown when AntiGem could not add a repository by itself (no skills, no plugin or marketplace it can read): the
+ * Shown when Featurestic could not add a repository by itself (no skills, no plugin or marketplace it can read): the
  * request to paste into an AI agent, which reads the README and sets it up. Nothing opens by itself: the user copies
  * it into the chat they want. [agent]: the agent whose settings page this came from (picked first).
  */
@@ -176,7 +176,7 @@ fun SetupWithAiDialog(source: String, agent: AgentKind, reason: String?, onDismi
                 }
                 Spacer(Modifier.height(6.dp))
                 Text(
-                    "AntiGem couldn't add ${source.trim()} by itself" + (reason?.takeIf { it.isNotBlank() }?.let { ": $it" } ?: ".") +
+                    "Featurestic couldn't add ${source.trim()} by itself" + (reason?.takeIf { it.isNotBlank() }?.let { ": $it" } ?: ".") +
                         " An AI agent can read its README and set it up for you.",
                     fontSize = 12.5.sp, lineHeight = 17.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
                 )
@@ -253,7 +253,7 @@ fun SetupWithAiDialog(source: String, agent: AgentKind, reason: String?, onDismi
 
 private fun copyText(context: Context, text: String) {
     (context.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager)
-        ?.setPrimaryClip(ClipData.newPlainText("AntiGem setup prompt", text))
+        ?.setPrimaryClip(ClipData.newPlainText("Featurestic setup prompt", text))
 }
 
 /** A small "Set up with AI" link under an error, to open [SetupWithAiDialog] again. */

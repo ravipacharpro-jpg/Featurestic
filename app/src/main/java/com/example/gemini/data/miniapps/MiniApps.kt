@@ -21,7 +21,7 @@ data class MiniApp(
     val folder: File,
     val entry: String,
     val iconFile: File?,
-    /** Status bar / splash color from the manifest; null = follow the AntiGem theme. */
+    /** Status bar / splash color from the manifest; null = follow the Featurestic theme. */
     val themeColor: Int?,
     /**
      * Declared permissions, normalized: name → spec, e.g. "network" → {"hosts": [...]}, "mcp:notes_mcp" → {},
@@ -374,7 +374,7 @@ object MiniApps {
                 }
                 continue
             }
-            // the PC signing tool follows this AntiGem version (it isn't an app the user owns)
+            // the PC signing tool follows this Featurestic version (it isn't an app the user owns)
             if (name == "tools") { runCatching { syncAssetDir(context, path, File(dir, name)) }; continue }
             if (name in done) continue
             val target = File(dir, name)
@@ -382,7 +382,7 @@ object MiniApps {
             done += name
         }
         prefs.edit().putStringSet("installed_samples", done).apply()
-        // the full guide, in step with this version of AntiGem (the developer MCP serves the same pages)
+        // the full guide, in step with this version of Featurestic (the developer MCP serves the same pages)
         runCatching { syncAssetDir(context, "mini-app-docs", File(dir, "docs")) }.onFailure { Log.w(TAG, "Docs: ${it.message}") }
     }
 
