@@ -1836,7 +1836,7 @@ private fun AppearanceSubScreen(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
 
-                val allAvailable = listOf("chat", "ide", "terminal", "browser", "notes", "files")
+                val allAvailable = listOf("chat", "ide", "terminal", "browser", "notes", "files", "run")
                 val currentItems = floatingSwitcherItems.toMutableList()
                 val displayedList = currentItems + allAvailable.filterNot { currentItems.contains(it) }
 
@@ -1849,6 +1849,7 @@ private fun AppearanceSubScreen(
                         "browser" -> "Web Browser"
                         "notes" -> "Notes & To-dos"
                         "files" -> "Files (file explorer)"
+                        "run" -> "Run (build & run commands)"
                         else -> itemId
                     }
                     val itemIcon = when (itemId) {
@@ -1858,6 +1859,7 @@ private fun AppearanceSubScreen(
                         "browser" -> Icons.Outlined.Language
                         "notes" -> Icons.Outlined.EditNote
                         "files" -> Icons.Outlined.FolderOpen
+                        "run" -> Icons.Outlined.PlayCircle
                         else -> Icons.Outlined.ChatBubbleOutline
                     }
 
@@ -2302,7 +2304,7 @@ private fun ChatHeaderIconsCard(
             HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f))
             Spacer(modifier = Modifier.height(10.dp))
 
-            val allAvailable = listOf("newchat", "ide", "terminal", "browser", "notes", "files")
+            val allAvailable = listOf("newchat", "ide", "terminal", "browser", "notes", "files", "run")
             val currentItems = items.filter { it in allAvailable }
             val displayedList = currentItems + allAvailable.filterNot { currentItems.contains(it) }
 
@@ -2315,6 +2317,7 @@ private fun ChatHeaderIconsCard(
                     "browser" -> "Web Browser"
                     "notes" -> "Notes & To-dos"
                     "files" -> "Files (file explorer)"
+                    "run" -> "Run (build & run commands)"
                     else -> itemId
                 }
                 val itemIcon = when (itemId) {
@@ -2324,6 +2327,7 @@ private fun ChatHeaderIconsCard(
                     "browser" -> Icons.Outlined.Language
                     "notes" -> Icons.Outlined.EditNote
                     "files" -> Icons.Outlined.FolderOpen
+                    "run" -> Icons.Outlined.PlayCircle
                     else -> Icons.Outlined.AddComment
                 }
 
@@ -2663,6 +2667,8 @@ private fun McpSubScreen(
                 McpPreset("Custom Plugin MCP", "Pick an installed plugin", Icons.Outlined.Extension, ClaudeTerracotta, null),
                 McpPreset("Plugin Developer", "Build & test Featurestic plugins", Icons.Outlined.DeveloperMode, GeminiPurple,
                     localSpec(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
+                McpPreset("Mini App Developer", "Build, test & sign mini apps", androidx.compose.material.icons.Icons.Outlined.Apps, GeminiBlue,
+                    localSpec(bridge.MINI_APP_DEVELOPER_MCP_NAME, "/mini_app_developer")),
                 McpPreset("Browser", "Control the in-app browser", Icons.Outlined.Language, GeminiBlue, localSpec("browser_mcp", "/browser")),
                 McpPreset("Terminal", "Run commands in the terminal", Icons.Outlined.Terminal, QuotaGreen, localSpec("terminal_mcp", "/terminal")),
                 McpPreset("Android", "Tap, type & read this phone", Icons.Outlined.PhoneAndroid, com.example.gemini.theme.AppColors.accentTeal,

@@ -1,9 +1,10 @@
 {
-  "version_code": 127,
-  "version_name": "1.1.7",
+  "version_code": 129,
+  "version_name": "1.2.0",
   "min_supported_version_code": 1,
   "changelog": [
-    "Improved browser mcp connection stability and performance."
+    "Added support for uploading image in chat using camera",
+    "Added antigem mini app support to create app and install inside antigem or share to other(in beta state)"
   ],
   "is_critical": false
 }

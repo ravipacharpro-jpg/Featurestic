@@ -4,10 +4,13 @@ import com.example.gemini.ui.components.ChatToast
 import com.example.gemini.ui.components.ChatToastType
 import com.example.gemini.ui.components.AppToastHelper
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import android.view.WindowManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -667,6 +670,54 @@ fun ChatScreen(
         }
     }
 
+    var tempCameraUri by remember { mutableStateOf<Uri?>(null) }
+    val cameraPhotoLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.TakePicture()
+    ) { success ->
+        if (success) {
+            tempCameraUri?.let { uri ->
+                viewModel.addAttachmentsFromUris(listOf(uri), context)
+            }
+        }
+    }
+
+    val launchCamera: () -> Unit = {
+        try {
+            val photoFile = File.createTempFile("camera_", ".jpg", context.cacheDir)
+            val uri = FileProvider.getUriForFile(
+                context,
+                "${context.packageName}.fileprovider",
+                photoFile
+            )
+            tempCameraUri = uri
+            cameraPhotoLauncher.launch(uri)
+        } catch (e: Exception) {
+            Log.e("ChatScreen", "Failed to launch camera", e)
+        }
+    }
+
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) {
+            launchCamera()
+        } else {
+            launchCamera()
+        }
+    }
+
+    val onTakePhotoClick: () -> Unit = {
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            launchCamera()
+        } else {
+            cameraPermissionLauncher.launch(android.Manifest.permission.CAMERA)
+        }
+    }
+
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { uris: List<Uri> ->
@@ -703,6 +754,16 @@ fun ChatScreen(
                 viewModel.setDraft(key, value)
                 if (value.text.isNotEmpty()) viewModel.onUserStartedTyping()
             }
+    }
+    // Run panel → "Send to chat": a run's command and output land in the message box (added after any draft), not sent
+    if (!isInFloatingWindow) {
+        val runHandoff by com.example.gemini.data.run.RunPanel.chatHandoff.collectAsState()
+        LaunchedEffect(runHandoff) {
+            val text = runHandoff ?: return@LaunchedEffect
+            val current = inputState.text.toString()
+            inputState.setTextAndPlaceCursorAtEnd(if (current.isBlank()) text else current.trimEnd() + "\n\n" + text)
+            com.example.gemini.data.run.RunPanel.chatHandoff.value = null
+        }
     }
     // The `/` and `@` popups depend only on the command / mention being typed, so ordinary typing doesn't redraw this screen
     val slashTrigger by remember {
@@ -756,16 +817,24 @@ fun ChatScreen(
     val pluginActionStatusMessage by viewModel.pluginActionStatusMessage.collectAsState()
     val pluginActionErrorMessage by viewModel.pluginActionErrorMessage.collectAsState()
 
-    var allSlashCommands by remember { mutableStateOf(com.example.gemini.data.remote.SlashCommandsCache.getCachedSync()) }
+    val allSlashCommands by com.example.gemini.data.remote.SlashCommandsCache.commands.collectAsState()
     val codexSlashCommands by codexBackend.slashCommands.collectAsState()
-    val effectiveSlashCommands = if (isClaudeChat) claudeSlashCommands else if (isCodexChat) codexSlashCommands else if (isOpenCodeChat) emptyList() else allSlashCommands
+    val openCodeSlashCommands by openCodeBackend.slashCommands.collectAsState()
+    // each agent's own list (what it really loads: the user's, the plugins' and the project's skills, its commands)
+    val effectiveSlashCommands = if (isClaudeChat) claudeSlashCommands else if (isCodexChat) codexSlashCommands else if (isOpenCodeChat) openCodeSlashCommands else allSlashCommands
+
+    // the "/" menu follows the open chat's project
+    LaunchedEffect(currentConv?.id, currentConv?.workspaceUri, currentConv?.agent) {
+        when {
+            isClaudeChat -> claudeBackend.refreshInfoForChat()
+            isCodexChat -> codexBackend.refreshSkills(force = false)
+            isOpenCodeChat -> openCodeBackend.refreshSlashCommands()
+        }
+    }
 
     LaunchedEffect(agyHubUrl, systemConnectionState) {
         if (systemConnectionState.isHubOnline) {
-            val fetched = com.example.gemini.data.remote.SlashCommandsCache.getCommands(agyHubUrl)
-            if (fetched.isNotEmpty()) {
-                allSlashCommands = fetched
-            }
+            com.example.gemini.data.remote.SlashCommandsCache.getCommands(agyHubUrl)
             val curId = currentConv?.id
             val isExisting = currentConv != null && currentConv?.title != "New Chat" && conversations.any { it.id == currentConv?.id }
             if (!curId.isNullOrBlank() && curId != "new" && isExisting && messages.isEmpty()) {
@@ -1733,9 +1802,13 @@ fun ChatScreen(
                                     "newchat", "ide", "terminal", "browser" -> true
                                     "notes" -> onNavigateToNotes != null
                                     "files" -> onNavigateToFiles != null
+                                    // the Run panel lives in the main window, not in the floating chat
+                                    "run" -> !isInFloatingWindow
                                     else -> false
                                 }
                             }
+                            val runsGoing by com.example.gemini.data.run.RunManager.runs.collectAsState()
+                            val anyRunGoing = runsGoing.any { it.status == com.example.gemini.data.run.RunStatus.RUNNING }
                             if (headerShortcuts.isNotEmpty()) Spacer(modifier = Modifier.width(4.dp))
                             headerShortcuts.forEach { id ->
                                 Box(
@@ -1757,6 +1830,7 @@ fun ChatScreen(
                                                 "browser" -> onNavigateToBrowser()
                                                 "notes" -> onNavigateToNotes?.invoke()
                                                 "files" -> onNavigateToFiles?.invoke()
+                                                "run" -> com.example.gemini.data.run.RunPanel.show()
                                                 "terminal" -> {
                                                     // like the floating switcher: needs SSH, server mode or the local Linux tools
                                                     val ready = useSshTerminal || AuthPreferences.currentRemoteMode ||
@@ -1774,8 +1848,17 @@ fun ChatScreen(
                                         },
                                     contentAlignment = Alignment.Center
                                 ) {
+                                    // a command running: a ring around the Run icon
+                                    if (id == "run" && anyRunGoing) {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.size(30.dp),
+                                            strokeWidth = 2.dp,
+                                            color = ClaudeTerracotta
+                                        )
+                                    }
                                     Icon(
                                         imageVector = when (id) {
+                                            "run" -> Icons.Outlined.PlayCircle
                                             "ide" -> Icons.Outlined.Code
                                             "terminal" -> Icons.Outlined.Terminal
                                             "browser" -> Icons.Outlined.Language
@@ -1789,9 +1872,10 @@ fun ChatScreen(
                                             "browser" -> "Open Browser"
                                             "notes" -> "Open Notes"
                                             "files" -> "Open Files"
+                                            "run" -> if (anyRunGoing) "Run (a command is running)" else "Open Run panel"
                                             else -> "New chat"
                                         },
-                                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
+                                        tint = if (id == "run" && anyRunGoing) ClaudeTerracotta else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
                                         modifier = Modifier.size(19.dp)
                                     )
                                 }
@@ -2344,7 +2428,22 @@ fun ChatScreen(
                     val isSlashActive = slash != null
                     val slashQuery = slash?.query ?: ""
 
-                    // `/plu:` browses custom Featurestic plugins and their skills; custom commands join the normal list
+                    // opening the "/" menu reads the agent's skills again (at most every 10 s), so ones added meanwhile show
+                    var lastSlashRefresh by remember { mutableStateOf(0L) }
+                    LaunchedEffect(isSlashActive) {
+                        if (!isSlashActive) return@LaunchedEffect
+                        val now = System.currentTimeMillis()
+                        if (now - lastSlashRefresh < 10_000) return@LaunchedEffect
+                        lastSlashRefresh = now
+                        when {
+                            isClaudeChat -> claudeBackend.refreshInfoForChat()
+                            isCodexChat -> codexBackend.refreshSkills()
+                            isOpenCodeChat -> openCodeBackend.refreshSlashCommands()
+                            systemConnectionState.isHubOnline -> com.example.gemini.data.remote.SlashCommandsCache.refresh(agyHubUrl)
+                        }
+                    }
+
+                    // `/plu:` browses custom AntiGem plugins and their skills; custom commands join the normal list
                     val customCommands = com.example.gemini.data.remote.CustomSlashCommands.commands.toList()
                     val installedPlugins = com.example.gemini.ui.browser.BrowserExtensionManager.instance.extensions.toList()
                     val slashSuggestions = remember(slashQuery, effectiveSlashCommands, isSlashActive, customCommands, installedPlugins) {
@@ -3474,6 +3573,7 @@ fun ChatScreen(
     if (showAttachmentSelector) {
         AttachmentSelectorBottomSheet(
             onPickImage = { photoPickerLauncher.launch("image/*") },
+            onTakePhoto = onTakePhotoClick,
             onPickFile = { filePickerLauncher.launch("*/*") },
             onPickFromFiles = { showAttachFromFiles = true },
             onDismiss = { showAttachmentSelector = false }

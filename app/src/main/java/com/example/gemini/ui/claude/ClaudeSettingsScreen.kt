@@ -34,6 +34,7 @@ import androidx.compose.material.icons.outlined.RecordVoiceOver
 import androidx.compose.material.icons.outlined.PhoneAndroid
 import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material.icons.outlined.Language
+import androidx.compose.material.icons.outlined.Apps
 import androidx.compose.material.icons.outlined.DeveloperMode
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -46,6 +47,9 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.Hub
+import androidx.compose.material.icons.outlined.ExpandLess
+import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material.icons.outlined.Psychology
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.Tune
@@ -114,6 +118,7 @@ enum class ClaudeSettingsPage(val title: String, val subtitle: String) {
     PERMISSIONS("Permission rules", "What Claude may do without asking"),
     MCP("MCP servers", "Tools Claude can call"),
     PLUGINS("Plugins", "Installed plugins, catalog and marketplaces"),
+    SKILLS("Skills", "Add skills from GitHub, update or remove them"),
     MEMORY("Memory", "Instructions (CLAUDE.md) and the notes Claude saved"),
     ADVANCED("Advanced", "Edit ~/.claude/settings.json directly")
 }
@@ -160,6 +165,7 @@ fun ClaudeSettingsGroup(deps: ClaudeSettingsDeps, cardBg: Color, onOpen: (Claude
                 row(ClaudeSettingsPage.PERMISSIONS, Icons.Outlined.Security, allowCount.takeIf { it > 0 }?.let { "$it allowed" }),
                 row(ClaudeSettingsPage.MCP, Icons.Outlined.Hub, mcp.size.takeIf { it > 0 }?.let { "$it servers" }),
                 row(ClaudeSettingsPage.PLUGINS, Icons.Outlined.Extension),
+                row(ClaudeSettingsPage.SKILLS, Icons.Outlined.Psychology),
                 row(ClaudeSettingsPage.MEMORY, Icons.Outlined.Description)
             ),
             listOf(row(ClaudeSettingsPage.ADVANCED, Icons.Outlined.Code))
@@ -200,6 +206,7 @@ fun ClaudeSettingsScreen(
             ClaudeSettingsPage.PERMISSIONS -> PermissionsPage(deps)
             ClaudeSettingsPage.MCP -> McpPage(deps, onOpenRea, onOpenReaGroups)
             ClaudeSettingsPage.PLUGINS -> Unit
+            ClaudeSettingsPage.SKILLS -> com.example.gemini.ui.settings.AgentSkillsPanel(com.example.gemini.domain.model.AgentKind.CLAUDE, ClaudeAccent)
             ClaudeSettingsPage.MEMORY -> MemoryPage(deps)
             ClaudeSettingsPage.ADVANCED -> AdvancedPage(deps)
         }
@@ -553,7 +560,8 @@ private fun McpPage(deps: ClaudeSettingsDeps, onOpenRea: () -> Unit, onOpenReaGr
     fun local(name: String, path: String) =
         ClaudeMcpAddRequest(name = name, transport = "http", url = "http://127.0.0.1:${bridge.DEFAULT_PORT}$path", headers = deviceHeaders)
     val presets = listOf(
-        ClaudeMcpPreset("Plugin Developer", "Build & test Featurestic plugins", Icons.Outlined.DeveloperMode, GeminiPurple, local(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
+        ClaudeMcpPreset("Plugin Developer", "Build & test AntiGem plugins", Icons.Outlined.DeveloperMode, GeminiPurple, local(bridge.DEVELOPER_MCP_NAME, "/extension_developer")),
+        ClaudeMcpPreset("Mini App Developer", "Build, test & sign mini apps", Icons.Outlined.Apps, GeminiBlue, local(bridge.MINI_APP_DEVELOPER_MCP_NAME, "/mini_app_developer")),
         ClaudeMcpPreset("Browser", "Control the in-app browser", Icons.Outlined.Language, GeminiBlue, local("browser_mcp", "/browser")),
         ClaudeMcpPreset("Terminal", "Run commands in the terminal", Icons.Outlined.Terminal, QuotaGreen, local("terminal_mcp", "/terminal")),
         ClaudeMcpPreset("Android", "Tap, type & read this phone", Icons.Outlined.PhoneAndroid, com.example.gemini.theme.AppColors.accentTeal, local(bridge.ANDROID_AUTOMATION_MCP_NAME, "/android")),
@@ -892,10 +900,28 @@ private fun PluginsPage(deps: ClaudeSettingsDeps) {
     var query by remember { mutableStateOf("") }
     var marketSource by remember { mutableStateOf("") }
     var addingMarket by remember { mutableStateOf<String?>(null) }
+    // Marketplaces tab: the marketplace whose plugins are shown under it, and the filter of that list
+    var expandedMarket by remember { mutableStateOf<String?>(null) }
+    var marketQuery by remember { mutableStateOf("") }
+    var namesBeforeAdd by remember { mutableStateOf<Set<String>>(emptySet()) }
+    var scrollToMarket by remember { mutableStateOf<String?>(null) }
+    // a repository Claude couldn't add as a marketplace: offer the "Set up with AI" request (the CLI's error is a toast)
+    var aiSetup by remember { mutableStateOf<String?>(null) }
+    var lastFailed by remember { mutableStateOf<String?>(null) }
     LaunchedEffect(Unit) { deps.config.loadPlugins() }
-    // the field empties once the marketplace add has finished
+    // the field empties once the marketplace add has finished, and the marketplace just added opens with its
+    // plugins (the list is reloaded before the action ends), so they can be installed right there
     LaunchedEffect(ops) {
-        addingMarket?.let { if (it !in ops) { addingMarket = null; marketSource = "" } }
+        addingMarket?.let { src ->
+            if (src !in ops) {
+                val markets = data?.marketplaces.orEmpty()
+                val added = markets.firstOrNull { it.name !in namesBeforeAdd } ?: markets.firstOrNull { sameMarketSource(it, src) }
+                added?.let { expandedMarket = it.name; marketQuery = ""; scrollToMarket = it.name }
+                if (added == null) { aiSetup = src; lastFailed = src } else lastFailed = null
+                addingMarket = null
+                marketSource = ""
+            }
+        }
     }
 
     // the catalog has thousands of plugins: search once typing pauses, off the main thread
@@ -929,8 +955,22 @@ private fun PluginsPage(deps: ClaudeSettingsDeps) {
             return@Column
         }
         val installedIds = remember(d) { d.plugins.installed.map { it.key }.toSet() }
+        // every marketplace's plugins (ids are name@marketplace), the installed ones included
+        val byMarket = remember(d) {
+            val availableIds = d.plugins.available.map { it.key }.toSet()
+            (d.plugins.available + d.plugins.installed.filter { it.key !in availableIds })
+                .groupBy { it.key.substringAfter('@', "") }
+                .mapValues { (_, list) -> list.sortedBy { it.name.lowercase() } }
+        }
         val listState = androidx.compose.foundation.lazy.rememberLazyListState()
         val bounce = com.example.gemini.ui.components.rememberBouncyLazyScroll(listState)
+        LaunchedEffect(scrollToMarket, d) {
+            val name = scrollToMarket ?: return@LaunchedEffect
+            val i = d.marketplaces.indexOfFirst { it.name == name }
+            // the Marketplaces tab lists "about" and "add" first; only the opened marketplace has rows under it
+            if (tab == 2 && i >= 0) listState.animateScrollToItem(2 + i)
+            scrollToMarket = null
+        }
         androidx.compose.foundation.lazy.LazyColumn(
             Modifier.fillMaxSize().then(bounce.modifier),
             state = listState,
@@ -1002,18 +1042,22 @@ private fun PluginsPage(deps: ClaudeSettingsDeps) {
                 }
                 else -> {
                     item(key = "about") {
-                        Hint("A marketplace is a catalog of plugins (a git repo with a marketplace.json). Discover lists the plugins of every marketplace added here; refresh one to get its newest plugins.")
+                        Hint("A marketplace is a catalog of plugins (a git repo with a marketplace.json). Tap one to see its plugins and install them here; Discover lists the plugins of every marketplace. Refresh one to get its newest plugins.")
                     }
                     item(key = "add") {
                         ClaudeCard {
                             SectionTitle("Add a marketplace")
                             Hint("GitHub owner/repo, a git URL, or a URL to marketplace.json")
+                            lastFailed?.let { failed ->
+                                com.example.gemini.ui.settings.SetupWithAiLink(ClaudeAccent) { aiSetup = failed }
+                            }
                             Spacer(Modifier.height(6.dp))
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 OutlinedTextField(marketSource, { marketSource = it.trim() }, singleLine = true, placeholder = { Text("owner/repo") }, modifier = Modifier.weight(1f))
                                 Spacer(Modifier.width(8.dp))
                                 val adding = addingMarket != null
                                 Button(onClick = {
+                                    namesBeforeAdd = d.marketplaces.map { it.name }.toSet()
                                     addingMarket = marketSource
                                     deps.config.pluginAction("marketplace-add", ClaudePluginAction(source = marketSource))
                                 }, enabled = marketSource.isNotBlank() && !adding, colors = ButtonDefaults.buttonColors(containerColor = ClaudeAccent)) {
@@ -1022,23 +1066,64 @@ private fun PluginsPage(deps: ClaudeSettingsDeps) {
                             }
                         }
                     }
-                    items(d.marketplaces.size, key = { "m_" + d.marketplaces[it].name }) { i ->
-                        val m = d.marketplaces[i]
-                        val op = ops[m.name]
-                        ClaudeCard {
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Column(Modifier.weight(1f)) {
-                                    Text(m.name, fontWeight = FontWeight.SemiBold, fontSize = 13.5.sp)
-                                    Hint(listOfNotNull(m.repo, m.url, m.source).firstOrNull().orEmpty())
+                    d.marketplaces.forEach { m ->
+                        val plugins = byMarket[m.name].orEmpty()
+                        val open = expandedMarket == m.name
+                        item(key = "m_" + m.name) {
+                            val op = ops[m.name]
+                            ClaudeCard {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Row(
+                                        Modifier.weight(1f).clickable { expandedMarket = if (open) null else m.name; marketQuery = "" },
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        Column(Modifier.weight(1f)) {
+                                            Text(m.name, fontWeight = FontWeight.SemiBold, fontSize = 13.5.sp)
+                                            Hint(listOfNotNull("${plugins.size} plugin${if (plugins.size == 1) "" else "s"}", listOfNotNull(m.repo, m.url, m.source).firstOrNull()).joinToString(" · "))
+                                        }
+                                        Icon(if (open) Icons.Outlined.ExpandLess else Icons.Outlined.ExpandMore, if (open) "Hide plugins" else "Show plugins")
+                                    }
+                                    if (op != null) PluginProgress(op)
+                                    else {
+                                        IconButton(onClick = { deps.config.pluginAction("marketplace-update", ClaudePluginAction(name = m.name)) }) {
+                                            Icon(Icons.Outlined.Refresh, "Refresh catalog")
+                                        }
+                                        IconButton(onClick = { deps.config.pluginAction("marketplace-remove", ClaudePluginAction(name = m.name)) }) {
+                                            Icon(Icons.Outlined.Delete, "Remove", tint = QuotaRed.copy(alpha = 0.8f))
+                                        }
+                                    }
                                 }
-                                if (op != null) PluginProgress(op)
-                                else {
-                                    IconButton(onClick = { deps.config.pluginAction("marketplace-update", ClaudePluginAction(name = m.name)) }) {
-                                        Icon(Icons.Outlined.Refresh, "Refresh catalog")
+                            }
+                        }
+                        if (open) {
+                            // its plugins, to install right here (the same as from Discover)
+                            if (plugins.size > 8) item(key = "mq_" + m.name) {
+                                OutlinedTextField(marketQuery, { marketQuery = it }, singleLine = true, placeholder = { Text("Search ${plugins.size} plugins in ${m.name}") },
+                                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp))
+                            }
+                            val q = marketQuery.trim().lowercase()
+                            val shown = if (q.isEmpty()) plugins else plugins.filter { "${it.name}\n${it.description}\n${it.category.orEmpty()}".lowercase().contains(q) }
+                            if (plugins.isEmpty()) item(key = "me_" + m.name) {
+                                Box(Modifier.padding(start = 12.dp)) { Hint("No plugins in this marketplace yet. Refresh it if it was just added.") }
+                            }
+                            items(shown.size, key = { "mp_" + m.name + "_" + shown[it].key }) { j ->
+                                val p = shown[j]
+                                val pop = ops[p.key]
+                                ClaudeCard(Modifier.padding(start = 12.dp)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Column(Modifier.weight(1f)) {
+                                            Text(p.name, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                                            p.category?.let { Hint(it) }
+                                        }
+                                        when {
+                                            pop != null -> PluginProgress(pop)
+                                            p.key in installedIds -> Text("Installed", fontSize = 11.sp, fontWeight = FontWeight.SemiBold, color = QuotaGreen)
+                                            else -> Button(onClick = { deps.config.pluginAction("install", ClaudePluginAction(plugin = p.key, scope = "user")) },
+                                                colors = ButtonDefaults.buttonColors(containerColor = ClaudeAccent)) { Text("Install", fontSize = 12.sp) }
+                                        }
                                     }
-                                    IconButton(onClick = { deps.config.pluginAction("marketplace-remove", ClaudePluginAction(name = m.name)) }) {
-                                        Icon(Icons.Outlined.Delete, "Remove", tint = QuotaRed.copy(alpha = 0.8f))
-                                    }
+                                    if (p.description.isNotBlank()) Text(p.description, fontSize = 11.5.sp, maxLines = 2, overflow = TextOverflow.Ellipsis,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.65f))
                                 }
                             }
                         }
@@ -1047,6 +1132,18 @@ private fun PluginsPage(deps: ClaudeSettingsDeps) {
             }
         }
     }
+    aiSetup?.let { src ->
+        com.example.gemini.ui.settings.SetupWithAiDialog(src, com.example.gemini.domain.model.AgentKind.CLAUDE, "Claude Code found no plugin marketplace in it") { aiSetup = null }
+    }
+}
+
+/** Whether marketplace [m] is the one added from [source] (owner/repo, a GitHub URL or a git URL). */
+private fun sameMarketSource(m: com.example.gemini.data.agent.claude.ClaudeMarketplace, source: String): Boolean {
+    fun norm(x: String) = x.trim().trimEnd('/').removeSuffix(".git").lowercase()
+        .removePrefix("https://").removePrefix("http://").removePrefix("www.").removePrefix("github.com/")
+    val src = norm(source)
+    if (src.isEmpty()) return false
+    return listOfNotNull(m.repo, m.url, m.source).map(::norm).any { it == src || it.endsWith("/$src") || src.endsWith("/$it") }
 }
 
 /** The running (or queued) action of one plugin / marketplace. */
